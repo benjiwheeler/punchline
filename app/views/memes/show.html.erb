@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Tag:</strong>
+  <%= @meme.tag %>
+  <ul id="tweets">
+  	<% sorted_tweets = @meme.tweets_sorted_by_score %>
+	<% sorted_tweets.each.with_index(1) do |tweet, i| %>
+	<%= render partial: tweet, locals: {index: i} %>
+	<% end %>
+  </ul>
+</p>
+
+<%= link_to 'Edit', edit_meme_path(@meme) %> |
+<%= link_to 'Back', memes_path %>

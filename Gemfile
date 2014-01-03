@@ -11,6 +11,7 @@ gem 'sass-rails', '~> 4.0.0'
 # javascript
 gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 # api
 gem 'jbuilder', '~> 1.2'
 gem 'httparty'
@@ -34,8 +35,8 @@ end
 gem 'rails_admin'
 # auth
 gem "devise"
-# security
-gem 'protected_attributes'
 #
 # end of canonical
 
+gem 'twitter'
+gem 'json'

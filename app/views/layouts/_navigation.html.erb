@@ -1,0 +1,6 @@
+<div id="navbar">
+	<%= form_for :meme, url: {action: "search"}, html: {method: 'GET', class: "meme_search_form"} do |f| %>
+	  <%= f.text_field :tag, placeholder: "Enter any twitter hashtag" %>
+	  <%= f.submit "Go" %>
+	<% end %>
+</div>
