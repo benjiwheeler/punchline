@@ -16,4 +16,4 @@
 /tmp
 
 # security and passwords
-/.env
+/.env*
