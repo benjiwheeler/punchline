@@ -218,6 +218,7 @@ DEPENDENCIES
   httparty
   jbuilder (~> 1.2)
   jquery-rails
+  jquery-ui-rails
   json
   pg
   pry
