@@ -24,7 +24,7 @@ gem 'rails_12factor', group: :production
 gem 'awesome_print'
 gem 'pry', group: [:development, :test]
 gem 'pry-rails', group: [:development, :test]
-gem 'pry-debugger', group: [:development, :test]
+gem 'pry-byebug', group: [:development, :test] # instead of pry-debugger or pry-nav
 gem 'pry-stack_explorer', group: [:development, :test]
 # documentation
 group :doc do
@@ -35,6 +35,9 @@ end
 gem 'rails_admin'
 # auth
 gem "devise"
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 #
 # end of canonical
 

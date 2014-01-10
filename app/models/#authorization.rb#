@@ -1,0 +1,21 @@
+class Authorization < ActiveRecord::Base
+  belongs_to :user
+  
+  def self.find_from_omniauth(auth)
+    find_by_provider_and_uid(auth['provider'], auth['uid'])
+  end
+  
+  def self.create_from_omniauth(auth, user = nil)
+    user ||= User.create_from_omniauth!(auth)
+    Authorization.create! do |auth|
+      auth.user = user
+      authuid = auth['uid']
+      authprovider = auth['provider']
+      # should set things like token here... 
+      auth.name = 
+        auth.screen_name = 
+        user.oauth_token = auth.credentials.token
+        user.oauth_expires_at = Time.at(auth.credentials.expires_at)
+        
+  end
+end

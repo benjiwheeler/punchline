@@ -12,12 +12,19 @@ class Tweet < ActiveRecord::Base
   end
   
   def generate_score
-  # binding.pry
-    self.score = self.followers + self.friends
+    # binding.pry
+    if self.statuses_count.nil?
+      self.score = 0
+    else
+      self.score = self.followers.blank? ? 0 : self.followers
+      self.score -= self.friends.blank? ? 0 : self.friends
+      self.score /= self.statuses_count
+    end
+    self.score
   end
   
   def get_generated_score
-    force_new_score = false
+    force_new_score = true
     if force_new_score or self.score.nil?
       self.generate_score
       save
@@ -46,11 +53,11 @@ class Tweet < ActiveRecord::Base
     :tweet_id   => tweet.id,
     # need to do the following rval instead of just tweet.attrs in order to have symbols as keys in attrs. otherwise they are strings.
     :attrs      => tweet.attrs,
-    user_real_name: tweet.attrs[:user][:name],
-    user_screen_name: tweet.attrs[:user][:screen_name],
-    followers: tweet.attrs[:user][:followers_count],
-    friends: tweet.attrs[:user][:friends_count],
-    statuses_count: tweet.attrs[:user][:statuses_count],
+    user_real_name: tweet.attrs.user.name,
+    user_screen_name: tweet.attrs.user.screen_name,
+    followers: tweet.attrs.user.followers_count,
+    friends: tweet.attrs.user.friends_count,
+    statuses_count: tweet.attrs.user.statuses_count,
     :created_in_twitter_at => tweet.created_at
     )
   end

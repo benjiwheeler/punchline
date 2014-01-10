@@ -1,4 +1,5 @@
 Punchline::Application.routes.draw do
+#  devise_for :users
   get "memes/search"
   resources :memes
   
@@ -9,6 +10,19 @@ Punchline::Application.routes.draw do
 
   root 'memes#index'
 
+
+#  match 'auth/:provider/callback', to: 'sessions#authcallback', via: :get
+#  match 'auth/failure', to: 'sessions#authfailure', via: :get
+#  match 'signout', to: 'sessions#destroy', as: 'signout', via: :get
+
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+#devise_scope :user do
+#  get 'sign_in', :to => 'devise/sessions#new', :as => :new_user_session
+#  get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
+#end
+#devise_scope :user do
+#   get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
+#end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
