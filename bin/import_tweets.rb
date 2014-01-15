@@ -20,6 +20,8 @@ end
 opts = { :count => 100, :result_type => 'recent' }
 opts[:since_id] = Tweet.last_tweet_id if Tweet.any?
 
-#client.search(HASHTAG, opts).each { |tweet| Tweet.create_from_tweet(tweet) }
-firstTweet = client.search(HASHTAG, opts).first
-Tweet.create_from_tweet(firstTweet)
+client.search(HASHTAG, opts).each do |tweet| 
+  Meme.add_tweet_from_twitter_info(HASHTAG, tweet)
+end
+#firstTweet = client.search(HASHTAG, opts).first
+#Tweet.create_from_twitter_info(firstTweet)

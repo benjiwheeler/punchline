@@ -1,0 +1,6 @@
+<h2>Pick the best one:</h2>
+<div class="group buttons">
+<% @buttons.each do |button| %>
+  <%= render :partial => 'option_button', :locals => {:tweet => button, :url => @url} %>
+<%= render :partial => 'option_button', :locals => {:text => "Sure, whatevs", :url => @url} %>
+</div>

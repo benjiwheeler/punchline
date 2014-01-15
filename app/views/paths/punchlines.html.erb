@@ -1,0 +1,14 @@
+<h2>Meme: <%= @cur_meme.tag %></h2>
+<h2>Which one is funniest?</h2>
+<div id="buttons" class="group buttons punchlines">
+<% @punches.each do |punch| %>
+  <% losing_punches = @punches.to_set %>
+  <% losing_punches.delete(punch) %>
+  <%= render :partial => 'punchline_button', locals: {punch: punch, losing_punches: losing_punches} %>
+<% end %>
+</div>
+
+<%= form_tag paths_reset_path do %>
+  <%= submit_tag "Reset this user (use in dev)" %>
+<% end %>
+

@@ -1,0 +1,186 @@
+// Place all the styles related to the paths controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+// Place all the styles related to the SequentialAttempts controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+$break-small: 320px;
+$break-large: 1024px;
+
+
+@mixin respond-to($media) {
+  @if $media == handhelds {
+    @media only screen and (max-width: $break-small) { @content; }
+}
+  @else if $media == medium-screens {
+    @media only screen and (min-width: $break-small + 1) and (max-width: $break-large - 1) { @content; }
+  }
+  @else if $media == wide-screens {
+    @media only screen and (min-width: $break-large) { @content; }
+  }
+}
+
+html {
+    background: #ccc;
+}
+body {
+	//min-width: 320px; // hack for mobile safari
+    font-family: "Lato";
+	line-height: 125%;
+    text-align: center;
+  background: #ccc;
+	color: #005c1f;
+}
+
+.buttons {
+	margin-top: 2em;
+}
+
+h1 {
+	 line-height: 100%;
+	color: #00007a;
+  margin-bottom: 1.0em;
+}
+
+h2 {
+	 font-size: 180%;
+	 line-height: 100%;
+ 	color: #1947A3;
+  margin-bottom: .75em;
+}
+
+h3 {
+	 font-size: 140%;
+ 	color: #1A1A80;
+  margin-bottom: .5em;
+}
+
+p {
+	color: #005c1f;
+	  	  margin-bottom: 0.5em;
+}
+p .long {
+	text-align: left;
+}
+
+.important {
+	color: #cc2900;
+	font-weight: 700;
+}
+
+.punchline_button input[type=submit] {
+    background-color: #ffdd66;
+border: 0;
+//    border: 2px solid #073;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius:6px;
+cursor: pointer;
+
+	width: 80%;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 10px;
+	margin-right: 10px;
+
+    font-size: 60%;
+
+white-space: normal;
+
+}
+
+.punchline_button input[type=submit]:hover {
+    background-color: #66ddff;
+}
+
+#main {
+	width: 320px;
+  	padding: 10px 10px;
+		
+  display: block;
+    position:relative;
+  background-color: #fff;
+  //margin: 0 auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+//    border: 3px solid #bbb;
+}
+
+#fullfocus {
+	$handheld_border_radius: 30px;
+	$medium_border_radius: 50px;
+	$wide_border_radius: 80px;
+	
+	/*
+	@include respond-to(handhelds) { 
+		width: 95vw;
+		-moz-border-radius:$handheld_border_radius;
+		-webkit-border-radius:$handheld_border_radius;
+	    border-radius: $handheld_border_radius;
+	  	padding: 4vmin;
+		
+	}
+	  @include respond-to(medium-screens) { 
+		  width: 80vw; 
+	  	-moz-border-radius:$medium_border_radius;
+	  	-webkit-border-radius:$medium_border_radius;
+	      border-radius: $medium_border_radius;		
+  	  	padding: 7vmin;
+		    
+	  }
+	  @include respond-to(wide-screens) { 
+		  width: 60vw; 
+	  	-moz-border-radius:$wide_border_radius;
+	  	-webkit-border-radius:$wide_border_radius;
+	      border-radius: $wide_border_radius;
+		  padding: 8vmin;		  
+	  }
+	  */
+	
+	width: 310px;
+	-moz-border-radius:$handheld_border_radius;
+	-webkit-border-radius:$handheld_border_radius;
+    border-radius: $handheld_border_radius;
+  	padding: 15px 10px;
+	
+	
+  height: auto;
+  
+  display: block;
+    position:relative;
+//    bottom:0;
+  //  top:0;
+//    left:0;
+  //  right:0;
+  background-color: #fff;
+  //margin: 0 auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+    border: 3px solid #bbb;
+}
+
+
+@include respond-to(medium-screens) { 
+  body {
+    zoom: 1.5;
+    -moz-transform: scale(1.5);
+    -moz-transform-origin: 50% 0;
+  }
+}
+@include respond-to(wide-screens) { 
+  body {
+    zoom: 2.0;
+    -moz-transform: scale(2.0);
+    -moz-transform-origin: 50% 0;
+	}
+}

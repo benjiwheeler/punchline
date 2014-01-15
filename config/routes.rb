@@ -4,11 +4,13 @@ Punchline::Application.routes.draw do
   resources :memes
   
 
-  resources :hashtags
-
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   root 'memes#index'
+
+  match 'paths/', to: 'paths#index', via: :get
+  match 'paths/vote', to: 'paths#vote', via: :post
+  match 'paths/reset', to: 'paths#reset', via: :post
 
 
 #  match 'auth/:provider/callback', to: 'sessions#authcallback', via: :get

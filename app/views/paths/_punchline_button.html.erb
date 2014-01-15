@@ -1,0 +1,20 @@
+<% @form_vote_decision = VoteDecision.new %>
+<% @form_vote_decision.user = current_user %>
+<% @form_vote_decision.votes.push Vote.new(punch_id: punch.id, value: 1.0) %>
+<% losing_punches.each do |loser| %>
+  <% @form_vote_decision.votes.push Vote.new(punch_id: loser.id, value: -1.0 / losing_punches.count) %>
+<% end %>
+
+<%= form_for @form_vote_decision, url: paths_vote_path, method: :post, html: { class: "punchline_button"} do |f| %>
+  <%= hidden_field_tag "vote_decision[user_id]", @form_vote_decision.user_id %>
+  <% @form_vote_decision.votes.each.with_index(1) do |vote, vote_index| %>
+    <%= f.fields_for vote do |vote_form| %>
+    <%= hidden_field_tag "vote_decision[votes_attributes][#{vote_index}][punch_id]", vote.punch_id %>
+    <%= hidden_field_tag "vote_decision[votes_attributes][#{vote_index}][value]", vote.value %>
+    <% end %>
+  <% end %>
+  <%= f.submit punch.cleaned_text %>
+<% end %>
+
+<!-- button_to punch.text, { action: "index", vote: {punch_id: punch.id, direction: direction}}, form_class: "punchline_button"  -->
+

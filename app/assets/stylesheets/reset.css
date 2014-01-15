@@ -1,0 +1,149 @@
+
+/* Yahoo CSS Reset - Copyright (c) 2010,  Yahoo! Inc. All rights reserved. Code licensed under the BSD License: http://developer.yahoo.com/yui/license.html version: 2.8.1 */
+html {
+    color: #000;
+    background: #FFF;
+}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+fieldset, img {
+    border: 0;
+}
+address, caption, cite, code, dfn, em, strong, th, var, optgroup {
+    font-style: inherit;
+    font-weight: inherit;
+}
+del, ins {
+    text-decoration: none;
+}
+li {
+    list-style: none;
+}
+caption, th {
+    text-align: left;
+}
+q:before, q:after {
+    content: '';
+}
+abbr, acronym {
+    border: 0;
+    font-variant: normal;
+}
+sup {
+    vertical-align: baseline;
+}
+sub {
+    vertical-align: baseline;
+}
+legend {
+    color: #000;
+}
+input, button, textarea, select, optgroup, option {
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+}
+input, button, textarea, select {
+    *font-size: 100%;
+}
+
+/* 1KB grid - 12 columns,  60 pixels each,  with 20 pixel gutter (960px) */
+.g1 {
+    width: 60px;
+}
+.g2 {
+    width: 140px;
+}
+.g3 {
+    width: 220px;
+}
+.g4 {
+    width: 300px;
+}
+.g5 {
+    width: 380px;
+}
+.g6 {
+    width: 460px;
+}
+.g7 {
+    width: 540px;
+}
+.g8 {
+    width: 620px;
+}
+.g9 {
+    width: 700px;
+}
+.g10 {
+    width: 780px;
+}
+.g11 {
+    width: 860px;
+}
+.g12 {
+    width: 940px;
+}
+.g1, .g2, .g3, .g4, .g5, .g6, .g7, .g8, .g9, .g10, .g11, .g12 {
+    overflow: hidden;
+    float: left;
+    display: inline;
+    margin: 0 10px;
+}
+.row {
+    width: 960px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+.row .row {
+    width: auto;
+    display: inline-block;
+    margin: 0 -10px;
+}
+
+
+
+/* Common styling */
+.center {text-align:center}
+.right {text-align:right}
+.left {text-align:left}
+.fright {float:right}
+.fleft {float:left}
+strong,.strong {font-weight:900}
+em,.em {background:#FF9}
+small,.small {font-size:.7em}
+
+/* Style sheet -  */
+body {}
+ #navtop {}
+  #navtop div ul li {display:inline}
+ #header {}
+  #header div h1 {}
+ #nav {}
+  #nav div ul li {display:inline}
+ #content {}
+  #sidebar-one {}
+  #sidebar-two {}
+  #main {}
+ #footer {}
+  #footer div {}
+
+/* clearfix: just add class "group" to any div that needs clearing inside it */
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* apply a natural box layout model to all elements */
+*, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+ }
+ 

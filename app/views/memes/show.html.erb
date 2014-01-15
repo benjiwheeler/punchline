@@ -1,12 +1,12 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Tag:</strong>
   <%= @meme.tag %>
-  <ul id="tweets">
-  	<% sorted_tweets = @meme.tweets_sorted_by_score %>
-	<% sorted_tweets.each.with_index(1) do |tweet, i| %>
-	<%= render partial: tweet, locals: {index: i} %>
+      <%= session["punch_index"] %>
+
+  <ul id="punches">
+  	<% sorted_punches = @meme.punches_sorted_by_score %>
+	<% sorted_punches.each.with_index(1) do |punch, i| %>
+	<%= render partial: punch, locals: {index: i} %>
 	<% end %>
   </ul>
 </p>

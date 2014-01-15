@@ -1,7 +1,11 @@
 class Tweet < ActiveRecord::Base
-  belongs_to :meme
-  after_save :init
-  
+  belongs_to :punch, dependent: :destroy
+  belongs_to :twitter_user
+
+  def text
+    self.attrs["text"]
+  end
+
   def to_s
     #binding.pry
     text = self.attrs["text"]
@@ -11,54 +15,35 @@ class Tweet < ActiveRecord::Base
     "score: #{self.score} #{name} (@#{screen_name}): #{text} [Created #{created_in_twitter_at}]"
   end
   
-  def generate_score
-    # binding.pry
-    if self.statuses_count.nil?
-      self.score = 0
-    else
-      self.score = self.followers.blank? ? 0 : self.followers
-      self.score -= self.friends.blank? ? 0 : self.friends
-      self.score /= self.statuses_count
-    end
-    self.score
-  end
-  
-  def get_generated_score
-    force_new_score = true
-    if force_new_score or self.score.nil?
-      self.generate_score
-      save
-    end
-    self.score
-  end
-  
-  def init
-    self.generate_score
-  end
-  
   # Public: Creates a CachedTweet from a Tweet object
   #
   # tweet - the tweet to cache
   #
   # Returns the new CachedTweet
-  def Tweet.create_from_twitter_info!(tweet, hashtag)
-    meme = Meme.where(tag: hashtag).first
-    meme ||= Meme.create!(tag: hashtag)
-    raise "Couldn't create Meme with hashtag #{hashtag}" unless meme
-
+  def Tweet.create_from_twitter_info!(tweet, twitter_user_author = nil)
     #json_attrs = JSON.parse(tweet.attrs.to_json, {:symbolize_names => true})
-    #binding.pry
+#    binding.pry
 
-    meme.tweets.create!(
-    :tweet_id   => tweet.id,
+    # don't duplicate tweets. but do update them with info that changes over time
+    existing_tweets = Tweet.where(tweet_id: tweet.id.to_s)
+    if existing_tweets.present?
+      existing_tweet = existing_tweets.first
+      existing_tweet.update(
+                   retweet_count: tweet.retweet_count.present? ? tweet.retweet_count : 0, 
+                   favorite_count: tweet.favorite_count.present? ? tweet.favorite_count : 0
+      )
+    end
+
+    twitter_user_author ||= TwitterUser.create_from_twitter_info!(tweet.user)
+    
+    Tweet.create!(
+    :tweet_id   => tweet.id.to_s,
     # need to do the following rval instead of just tweet.attrs in order to have symbols as keys in attrs. otherwise they are strings.
     :attrs      => tweet.attrs,
-    user_real_name: tweet.attrs.user.name,
-    user_screen_name: tweet.attrs.user.screen_name,
-    followers: tweet.attrs.user.followers_count,
-    friends: tweet.attrs.user.friends_count,
-    statuses_count: tweet.attrs.user.statuses_count,
-    :created_in_twitter_at => tweet.created_at
+                  twitter_user_id: twitter_user_author.id,
+    :created_in_twitter_at => tweet.created_at,
+      retweet_count: tweet.retweet_count.present? ? tweet.retweet_count : 0, 
+      favorite_count: tweet.favorite_count.present? ? tweet.favorite_count : 0
     )
   end
 
@@ -74,6 +59,7 @@ class Tweet < ActiveRecord::Base
   # Returns an integer
   def Tweet.last_tweet_id
     return nil unless Tweet.any?
-    Integer(Tweet.last.tweet_id)
+    Tweet.last.tweet_id
   end
 end
+

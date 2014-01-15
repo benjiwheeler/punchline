@@ -5,15 +5,16 @@ class MemesController < ApplicationController
   # GET /memes
   # GET /memes.json
   def index    
+#    binding.pry
     @memes = Meme.all
   end
 
   # GET /memes/1
   # GET /memes/1.json
   def show
-    if @meme.tweets.empty?
+#    if @meme.punches.empty?
       @meme.pull_tweets
-    end
+ #   end
   end
 
   # GET /memes/new

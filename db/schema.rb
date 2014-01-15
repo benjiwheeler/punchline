@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140109190635) do
+ActiveRecord::Schema.define(version: 20140115211854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,22 +54,46 @@ ActiveRecord::Schema.define(version: 20140109190635) do
 
   add_index "memes", ["tag"], name: "index_memes_on_tag", using: :btree
 
+  create_table "punches", force: true do |t|
+    t.integer  "user_id"
+    t.string   "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "meme_id"
+    t.float    "score"
+  end
+
+  add_index "punches", ["meme_id"], name: "index_punches_on_meme_id", using: :btree
+  add_index "punches", ["user_id"], name: "index_punches_on_user_id", using: :btree
+
   create_table "tweets", force: true do |t|
-    t.string   "tweet_id"
     t.json     "attrs"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "created_in_twitter_at"
-    t.integer  "meme_id"
-    t.float    "score"
-    t.string   "user_real_name"
-    t.string   "user_screen_name"
+    t.integer  "punch_id"
+    t.integer  "retweet_count"
+    t.integer  "favorite_count"
+    t.integer  "twitter_user_id"
+    t.string   "tweet_id"
+  end
+
+  add_index "tweets", ["punch_id"], name: "index_tweets_on_punch_id", using: :btree
+  add_index "tweets", ["twitter_user_id"], name: "index_tweets_on_twitter_user_id", using: :btree
+
+  create_table "twitter_users", force: true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.string   "screen_name"
     t.integer  "followers"
     t.integer  "friends"
     t.integer  "statuses_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "score"
   end
 
-  add_index "tweets", ["meme_id"], name: "index_tweets_on_meme_id", using: :btree
+  add_index "twitter_users", ["user_id"], name: "index_twitter_users_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -88,5 +112,24 @@ ActiveRecord::Schema.define(version: 20140109190635) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "vote_decisions", force: true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "vote_decisions", ["user_id"], name: "index_vote_decisions_on_user_id", using: :btree
+
+  create_table "votes", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "value"
+    t.integer  "punch_id"
+    t.integer  "vote_decision_id"
+  end
+
+  add_index "votes", ["punch_id"], name: "index_votes_on_punch_id", using: :btree
+  add_index "votes", ["vote_decision_id"], name: "index_votes_on_vote_decision_id", using: :btree
 
 end
