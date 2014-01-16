@@ -8,12 +8,8 @@
 
     <p class="navbar-text">Signed in as <strong><%= current_user.name %></strong>
     <%= link_to "[Sign out]", destroy_user_session_path, id: "sign_out", class: "navbar-link", method: :delete %></p>
-    <% if current_user.authorizations.where(provider: "facebook").blank? %>
-      <p class="navbar-text"><%= link_to "Add Facebook", user_omniauth_authorize_path(:facebook), id: "sign_in", class: "navbar-link" %></p>
-    <% end %>
-    <% if current_user.authorizations.where(provider: "twitter").blank? %>
-      <p class="navbar-text"><%= link_to "Add Twitter", user_omniauth_authorize_path(:twitter), id: "sign_in", class: "navbar-link" %></p>
-    <% end %>
+           <%= render partial: 'nav/authstatus', locals: {provider: :facebook, displayname: :name} %>
+           <%= render partial: 'nav/authstatus', locals: {provider: :twitter, displayname: :nickname} %>
 
   <% else %>
     <p class="navbar-text"><%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook), id: "sign_in", class: "navbar-link" %></p>

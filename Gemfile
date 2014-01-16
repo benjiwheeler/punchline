@@ -33,7 +33,7 @@ group :doc do
   gem 'sdoc', require: false
 end
 # admin
-gem 'rails_admin'
+#gem 'rails_admin'
 # auth
 gem "devise"
 gem 'omniauth'
@@ -44,3 +44,5 @@ gem 'omniauth-twitter'
 
 gem 'twitter'
 gem 'json'
+gem 'font-awesome-rails', '>= 4.0.0'
+

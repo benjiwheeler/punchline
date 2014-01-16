@@ -32,8 +32,6 @@ GEM
     bcrypt-ruby (3.1.2)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bootstrap-sass (2.3.2.2)
-      sass (~> 3.2)
     buftok (0.2.0)
     builder (3.1.4)
     byebug (2.5.0)
@@ -62,10 +60,8 @@ GEM
     execjs (2.0.2)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
-    font-awesome-rails (3.2.1.3)
+    font-awesome-rails (4.0.3.1)
       railties (>= 3.2, < 5.0)
-    haml (4.0.4)
-      tilt
     hashie (2.0.5)
     hike (1.2.3)
     http (0.5.0)
@@ -87,9 +83,6 @@ GEM
     json (1.8.1)
     jwt (0.1.8)
       multi_json (>= 1.5)
-    kaminari (0.14.1)
-      actionpack (>= 3.0.0)
-      activesupport (>= 3.0.0)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -97,14 +90,10 @@ GEM
       thread_safe (~> 0.1.3)
     method_source (0.8.2)
     mime-types (1.25.1)
-    mini_portile (0.5.2)
     minitest (4.7.5)
     multi_json (1.8.4)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
-    nested_form (0.3.2)
-    nokogiri (1.6.0)
-      mini_portile (~> 0.5.0)
     oauth (0.4.7)
     oauth2 (0.8.1)
       faraday (~> 0.8)
@@ -142,9 +131,6 @@ GEM
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     rack (1.5.2)
-    rack-pjax (0.7.0)
-      nokogiri (~> 1.5)
-      rack (~> 1.3)
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.0.2)
@@ -158,21 +144,6 @@ GEM
     rails_12factor (0.0.2)
       rails_serve_static_assets
       rails_stdout_logging
-    rails_admin (0.5.0)
-      bootstrap-sass (~> 2.3)
-      builder (~> 3.1)
-      coffee-rails (~> 4.0)
-      font-awesome-rails (~> 3.0)
-      haml (~> 4.0)
-      jquery-rails (~> 3.0)
-      jquery-ui-rails (~> 4.0)
-      kaminari (~> 0.14)
-      nested_form (~> 0.3)
-      rack-pjax (~> 0.7)
-      rails (~> 4.0.0)
-      remotipart (~> 1.0)
-      safe_yaml (~> 0.9)
-      sass-rails (~> 4.0)
     rails_serve_static_assets (0.0.1)
     rails_stdout_logging (0.0.3)
     railties (4.0.2)
@@ -183,8 +154,6 @@ GEM
     rake (10.1.1)
     rdoc (3.12.2)
       json (~> 1.4)
-    remotipart (1.2.1)
-    safe_yaml (0.9.7)
     sass (3.2.13)
     sass-rails (4.0.1)
       railties (>= 4.0.0, < 5.0)
@@ -239,6 +208,7 @@ DEPENDENCIES
   awesome_print
   coffee-rails (~> 4.0.0)
   devise
+  font-awesome-rails (>= 4.0.0)
   httparty
   jbuilder (~> 1.2)
   jquery-rails
@@ -254,7 +224,6 @@ DEPENDENCIES
   pry-stack_explorer
   rails (= 4.0.2)
   rails_12factor
-  rails_admin
   sass-rails (~> 4.0.0)
   sdoc
   solid_assert

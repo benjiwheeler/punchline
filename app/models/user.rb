@@ -5,8 +5,9 @@ class User < ActiveRecord::Base
   has_many :punches, dependent: :destroy
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, \
-         :recoverable, :rememberable, :trackable, :validatable
+#  devise :database_authenticatable, :registerable, \
+#         :recoverable, :rememberable, :trackable, :validatable
+  devise :database_authenticatable
   devise :omniauthable, :omniauth_providers => [:facebook, :twitter]
   
   def to_s
@@ -26,7 +27,16 @@ class User < ActiveRecord::Base
     return self.email unless self.email.blank?
     return "Guest"
   end
-  
+
+  def has_auth?(provider)
+    self.authorizations.where(provider: provider.to_s).any?
+  end
+
+  def auth_field(provider, fieldname)
+    return nil unless has_auth?(provider)
+    self.authorizations.where(provider: provider.to_s).first.attributes[fieldname.to_s]
+  end
+
   def User.find_from_oauth(oauth_params)
     find_by_email(oauth_params.info.email)
   end

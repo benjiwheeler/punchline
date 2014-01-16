@@ -1,6 +1,7 @@
 class PathsController < ApplicationController
 #  require 'ostruct'
   require 'awesome_print'
+#  before_filter :authenticate_user!, :except => [:login]
   before_filter :user_must_be_logged_in, :except => [:login]
 
   def login
@@ -9,9 +10,11 @@ class PathsController < ApplicationController
   def index
 #    @path_action = handle_post(path_params)
     if !set_meme
+#      binding.pry
       redirect_to paths_done_path
       return
     end
+#    binding.pry
     @punches = cur_meme.punches_fresh_to_user(current_user, Meme.min_punches_per_meme_per_session)
     render template: "paths/punchlines"
   end
@@ -29,6 +32,7 @@ class PathsController < ApplicationController
   end
 
   def done
+    binding.pry
   end
 
   private

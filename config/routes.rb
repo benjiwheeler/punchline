@@ -4,7 +4,7 @@ Punchline::Application.routes.draw do
   resources :memes
   
 
-  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+#  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   root 'paths#index'
 
