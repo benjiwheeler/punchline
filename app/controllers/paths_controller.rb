@@ -8,7 +8,7 @@ class PathsController < ApplicationController
 
   def index
 #    @path_action = handle_post(path_params)
-    set_meme or redirect_to paths_done_path
+    set_meme or redirect_to paths_done_path and return
     @punches = cur_meme.punches_fresh_to_user(current_user, Meme.min_punches_per_meme_per_session)
     render template: "paths/punchlines"
   end
