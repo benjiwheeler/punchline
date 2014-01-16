@@ -2,10 +2,6 @@ class Tweet < ActiveRecord::Base
   belongs_to :punch, dependent: :destroy
   belongs_to :twitter_user
 
-  def text
-    self.attrs["text"]
-  end
-
   def to_s
     #binding.pry
     text = self.attrs["text"]
@@ -40,6 +36,7 @@ class Tweet < ActiveRecord::Base
     :tweet_id   => tweet.id.to_s,
     # need to do the following rval instead of just tweet.attrs in order to have symbols as keys in attrs. otherwise they are strings.
     :attrs      => tweet.attrs,
+text: tweet.text,
                   twitter_user_id: twitter_user_author.id,
     :created_in_twitter_at => tweet.created_at,
       retweet_count: tweet.retweet_count.present? ? tweet.retweet_count : 0, 

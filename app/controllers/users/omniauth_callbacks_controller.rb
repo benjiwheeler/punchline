@@ -28,9 +28,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def failure
     origin = request.env['omniauth.origin']
     destination = origin.blank? ? root_path : origin
-#    binding.pry
-    super
-#    redirect_to destination, alert: "Connection failed"
+    binding.pry
+#    super
+    redirect_to destination, alert: "Connection failed"
   end
 
   alias_method :facebook, :create

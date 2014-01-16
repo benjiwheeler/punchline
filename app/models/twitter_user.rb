@@ -1,7 +1,7 @@
 class TwitterUser < ActiveRecord::Base
   belongs_to :user # but doesn't necessarily have any user
   has_many :tweets
-  after_save :init
+  before_save :init
 
   def TwitterUser.create_from_twitter_info!(tweet_user_fields)
     twitter_user = TwitterUser.where(screen_name: tweet_user_fields.screen_name)
@@ -33,13 +33,9 @@ class TwitterUser < ActiveRecord::Base
   end
 
   def generate_score
-    if self.statuses_count.nil?
-      self.score = 0
-    else
-      self.score = self.followers.blank? ? 0 : self.followers
-      self.score -= self.friends.blank? ? 0 : self.friends
-      self.score /= self.statuses_count
-    end
+    self.score = Math.log(self.followers) / Math.log(10)
+    self.score += Math.log(self.friends) / Math.log(10)
+    self.score += Math.log(self.statuses_count) / Math.log(10)
     self.score
   end
 

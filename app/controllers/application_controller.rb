@@ -22,5 +22,15 @@ class ApplicationController < ActionController::Base
 
     helper_method :current_user, :signed_in? # why can't include :current_user= ?
 
+    def after_sign_in_path_for(resource_or_scope)
+      binding.pry
+      if request.env['omniauth.origin']
+         request.env['omniauth.origin']
+      end
+    end
+
+    def user_must_be_logged_in
+      redirect_to paths_login_path unless signed_in?
+    end
 
 end

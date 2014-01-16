@@ -6,9 +6,11 @@ Punchline::Application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
-  root 'memes#index'
+  root 'paths#index'
 
   match 'paths/', to: 'paths#index', via: :get
+  match 'paths/login', to: 'paths#login', via: [:post, :get]
+  match 'paths/done', to: 'paths#done', via: [:post, :get]
   match 'paths/vote', to: 'paths#vote', via: :post
   match 'paths/reset', to: 'paths#reset', via: :post
 

@@ -27,9 +27,20 @@ class Meme < ActiveRecord::Base
 #    pound_tag.camelize
   end
 
-  def good_num_punches_left(num_punches_seen)
-    num_punches_unseen = self.punches.count - num_punches_seen
-    num_punches_seen < Meme.max_punches_per_meme_per_session and num_punches_unseen > Meme.min_punches_per_meme_per_session
+  def num_votes_by(user)
+    num_votes = 0
+    self.punches.each do |punch|
+      num_votes += user.votes.where(punch_id: punch.id).count
+    end
+    num_votes
+  end
+
+  def good_num_punches_left(user, num_punches_seen_in_session)
+#    binding.pry
+    num_punches_seen_ever = self.num_votes_by(user)
+    num_punches_unseen = self.punches.count - num_punches_seen_ever
+    num_punches_seen_in_session < Meme.max_punches_per_meme_per_session \
+        and num_punches_unseen > Meme.min_punches_per_meme_per_session
   end
 
   def punches_sorted_by_score
@@ -38,8 +49,8 @@ class Meme < ActiveRecord::Base
     sorted_punches
   end
 
-  def Meme.sorted_by_score
-    sorted_memes = Meme.all #.sort_by { |meme| meme.get_generated_score }.reverse
+  def Meme.sorted_by_score_for_user(user)
+    sorted_memes = Meme.all.shuffle #.sort_by { |meme| meme.get_generated_score }.reverse
     sorted_memes
   end
 
@@ -52,6 +63,7 @@ class Meme < ActiveRecord::Base
   end
   
   def punches_fresh_to_user(user, num_punches)
+    assert user.present?, "User missing"
     best_punches = Array.new
     sorted_punches = punches_sorted_by_score
     sorted_punches.each do |punch|
@@ -85,6 +97,7 @@ class Meme < ActiveRecord::Base
   end
 
   def pull_tweets
+    # note that result_type = popular turns up very little content
     opts = { :count => Meme.max_tweets_to_fetch, :result_type => 'recent' }
     opts[:since_id] = self.last_tweet_id if self.punches.any?
 
@@ -92,6 +105,7 @@ class Meme < ActiveRecord::Base
     self.twitter_client.search("\##{self.tag}", \
         opts).each.with_index(1) do |twitter_info, i|
       break if i > Meme.max_tweets_to_fetch
+      next if twitter_info.retweeted_status.present? # skip retweets
       self.punches << Punch.create_from_twitter_info!(twitter_info)
     end
   end

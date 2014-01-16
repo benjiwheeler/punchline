@@ -1,6 +1,10 @@
 class PathsController < ApplicationController
 #  require 'ostruct'
   require 'awesome_print'
+  before_filter :user_must_be_logged_in, :except => [:login]
+
+  def login
+  end
 
   def index
 #    @path_action = handle_post(path_params)
@@ -12,12 +16,16 @@ class PathsController < ApplicationController
 
   def vote
     @decision = current_user.vote_decisions.create(path_params)
+    session["cur_meme_num_punches_seen_in_session"] += @decision.votes.count if @decision.votes.any?
     redirect_to paths_path, notice: "Vote recorded: #{@decision.deep_inspect}"
   end
 
   def reset
     current_user.vote_decisions.destroy_all
     redirect_to paths_path, notice: "all your votes are destroyed! welcome to america!"
+  end
+
+  def done
   end
 
   private
@@ -35,38 +43,28 @@ class PathsController < ApplicationController
       session[:prev_mode]
     end
     
-    def exit_meme
-      session["cur_meme_id"] = nil
-      session["cur_meme_num_punches_seen"] = 0
-    end      
-
     def cur_meme
       return @cur_meme if @cur_meme.present?
       return nil if session["cur_meme_id"].blank?
       @cur_meme = Meme.find_by_id(Integer(session["cur_meme_id"]))
     end
 
-    def set_meme
-      @cur_meme = choose_meme
+    def good_meme
+      session["cur_meme_num_punches_seen_in_session"] = 0 if session["cur_meme_num_punches_seen_in_session"].blank?
+      cur_meme.present? \
+            and cur_meme.good_num_punches_left(current_user, session["cur_meme_num_punches_seen_in_session"])
     end
 
     def set_meme
-      num_punches_seen = session["cur_meme_num_punches_seen"]
-      if cur_meme.present?
-        if num_punches_seen.blank?
-          num_punches_seen = 0
-          session["cur_meme_num_punches_seen"] = 0
-        end
-        self.exit_meme unless cur_meme.good_num_punches_left(num_punches_seen)
+      sorted_memes = Meme.sorted_by_score_for_user(current_user)
+      sorted_memes.each do |sorted_meme| 
+        break if good_meme
+        # no good cur meme, so pick one
+        @cur_meme = sorted_meme
+        session["cur_meme_id"] = @cur_meme.blank? ? nil : @cur_meme.id
+        session["cur_meme_num_punches_seen_in_session"] = 0
       end
-      
-      if cur_meme.blank?
-        # no current one, so pick one
-        sorted_memes = Meme.sorted_by_score
-        @cur_meme = sorted_memes.present? ? sorted_memes.first : nil
-        session["cur_meme_id"] = nil if @cur_meme.blank?
-        session["cur_meme_id"] = @cur_meme.id
-      end
+      redirect_to paths_done_path unless good_meme 
     end
         
 

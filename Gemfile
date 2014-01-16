@@ -22,6 +22,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'rails_12factor', group: :production
 # debugging
 gem 'awesome_print'
+gem 'solid_assert'
 gem 'pry', group: [:development, :test]
 gem 'pry-rails', group: [:development, :test]
 gem 'pry-byebug', group: [:development, :test] # instead of pry-debugger or pry-nav

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140115211854) do
+ActiveRecord::Schema.define(version: 20140115214435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 20140115211854) do
     t.integer  "favorite_count"
     t.integer  "twitter_user_id"
     t.string   "tweet_id"
+    t.string   "text"
   end
 
   add_index "tweets", ["punch_id"], name: "index_tweets_on_punch_id", using: :btree
