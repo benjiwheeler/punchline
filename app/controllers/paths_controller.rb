@@ -17,7 +17,7 @@ class PathsController < ApplicationController
   def vote
     @decision = current_user.vote_decisions.create(path_params)
     session["cur_meme_num_punches_seen_in_session"] += @decision.votes.count if @decision.votes.any?
-    redirect_to paths_path, notice: "Vote recorded: #{@decision.deep_inspect}"
+    redirect_to paths_path, notice: "Got your vote!"
   end
 
   def reset

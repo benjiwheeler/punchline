@@ -1,6 +1,6 @@
 # encoding: utf-8
 class Meme < ActiveRecord::Base
-  has_many :punches
+  has_many :punches, dependent: :destroy
   validates :tag, presence: true
   validates_uniqueness_of :tag
   
@@ -93,7 +93,7 @@ class Meme < ActiveRecord::Base
   end
 
   def Meme.max_tweets_to_fetch
-    10
+    100
   end
 
   def pull_tweets
