@@ -8,7 +8,7 @@ class PathsController < ApplicationController
 
   def index
 #    @path_action = handle_post(path_params)
-    set_meme
+    set_meme or redirect_to paths_done_path
     @punches = cur_meme.punches_fresh_to_user(current_user, Meme.min_punches_per_meme_per_session)
     render template: "paths/punchlines"
   end
@@ -64,7 +64,7 @@ class PathsController < ApplicationController
         session["cur_meme_id"] = @cur_meme.blank? ? nil : @cur_meme.id
         session["cur_meme_num_punches_seen_in_session"] = 0
       end
-      redirect_to paths_done_path unless good_meme 
+      good_meme 
     end
         
 
