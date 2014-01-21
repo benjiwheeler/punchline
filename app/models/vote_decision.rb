@@ -12,4 +12,5 @@ class VoteDecision < ActiveRecord::Base
     end
     str
   end
+
 end

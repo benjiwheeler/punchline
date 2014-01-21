@@ -27,8 +27,9 @@ class PathsController < ApplicationController
   end
 
   def soft_user_reset
-    meme_id = reset_params.meme_id
-    current_user.vote_decisions.where(meme_id: meme_id).each {|vote_decision| vote_decision.mark_repeatable!}
+    @meme = Meme.find(reset_params[:id])
+    binding.pry
+    @meme.vote_decisions.where(user_id: current_user.id).votes.each {|vote| vote_decision.mark_repeatable}
     redirect_to paths_path, notice: "ok, you can vote on that meme again from scratch now"
   end
 
@@ -38,7 +39,7 @@ class PathsController < ApplicationController
   end
 
   def done
-    binding.pry
+#    binding.pry
   end
 
   private
@@ -86,7 +87,7 @@ class PathsController < ApplicationController
       params.require(:vote_decision).permit( :user_id, {votes_attributes: [:punch_id, :value ]})
     end
     def reset_params
-      params.require(:reset).permit( :meme_id)
+      params.require(:meme).permit(:id)
     end
 
 end

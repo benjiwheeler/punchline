@@ -6,4 +6,9 @@ class Vote < ActiveRecord::Base
   def is_unrepeatable?
     !self.is_repeatable
   end
+
+  def mark_repeatable
+    self.is_repeatable = true
+    self.save
+  end
 end

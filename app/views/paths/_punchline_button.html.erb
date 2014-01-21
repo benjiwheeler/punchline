@@ -1,5 +1,6 @@
 <% @form_vote_decision = VoteDecision.new %>
 <% @form_vote_decision.user = current_user %>
+<% @form_vote_decision.meme = meme %>
 <% @form_vote_decision.votes.push Vote.new(punch_id: punch.id, value: 1.0 * standard_vote_size) %>
 <% losing_punches.each do |loser| %>
   <% @form_vote_decision.votes.push Vote.new(punch_id: loser.id, value: -1.0 * standard_vote_size / losing_punches.count) %>
@@ -7,6 +8,7 @@
 
 <%= form_for @form_vote_decision, url: paths_vote_path, method: :post, html: { class: "punchline_button"} do |f| %>
   <%= hidden_field_tag "vote_decision[user_id]", @form_vote_decision.user_id %>
+  <%= hidden_field_tag "vote_decision[meme_id]", @form_vote_decision.meme_id %>
   <% @form_vote_decision.votes.each.with_index(1) do |vote, vote_index| %>
     <%= f.fields_for vote do |vote_form| %>
     <%= hidden_field_tag "vote_decision[votes_attributes][#{vote_index}][punch_id]", vote.punch_id %>

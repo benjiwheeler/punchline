@@ -1,0 +1,6 @@
+
+<%= form_for meme, url: paths_soft_user_reset_path do |f| %>
+  <%= f.hidden_field :id %>
+  <%= f.submit "Soft reset this user's votes on this meme (use in dev)" %>
+<% end %>
+

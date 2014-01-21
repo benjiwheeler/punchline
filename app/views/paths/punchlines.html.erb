@@ -4,11 +4,8 @@
 <% @punches.each do |punch| %>
   <% losing_punches = @punches.to_set %>
   <% losing_punches.delete(punch) %>
-  <%= render :partial => 'punchline_button', locals: {punch: punch, losing_punches: losing_punches} %>
+  <%= render :partial => 'punchline_button', locals: {meme: @cur_meme, punch: punch, losing_punches: losing_punches} %>
 <% end %>
 </div>
 
-<%= form_for @cur_meme, url: paths_soft_reset_path do |f| %>
-  <%= f.submit "Soft reset this user's votes on this meme (use in dev)" %>
-<% end %>
-
+  <%= render :partial => 'reset_user_button', locals: {meme: @cur_meme} %>
