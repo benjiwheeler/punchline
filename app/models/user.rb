@@ -7,7 +7,10 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
 #  devise :database_authenticatable, :registerable, \
 #         :recoverable, :rememberable, :trackable, :validatable
+
+  # NOTE: is this one still necessary, since we're not using authenticate_user?
   devise :database_authenticatable
+  devise :rememberable, :trackable, :timeoutable
   devise :omniauthable, :omniauth_providers => [:facebook, :twitter]
   
   def to_s
@@ -50,8 +53,15 @@ class User < ActiveRecord::Base
     newuser
   end
 
-  def has_voted_on_punch?(punch)
-    votes.find_by_punch_id(punch.id).present?
+  def could_vote_on_punch?(punch)
+    has_unrepeatable_vote = false
+    votes.where(punch_id: punch.id).each do |vote|
+      if vote.is_unrepeatable? 
+        has_unrepeatable_vote = true
+        break
+      end
+    end
+    !has_unrepeatable_vote
   end
 
   def User.find_with_twitter_screen_name(screen_name)

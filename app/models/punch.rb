@@ -5,10 +5,14 @@ class Punch < ActiveRecord::Base
   has_many :votes, dependent: :destroy
   before_save :init
 
-  def Punch.create_from_twitter_info!(twitter_info)
+  def Punch.create_from_twitter_info(twitter_info)
     newpunch = Punch.new
-    newpunch.tweet = Tweet.create_from_twitter_info!(twitter_info)
-    newpunch
+    newpunch.tweet = Tweet.create_from_twitter_info(twitter_info)
+    if newpunch.tweet.present?
+      newpunch
+    else
+      nil
+    end
   end
 
   def cleaned_text
@@ -17,11 +21,17 @@ class Punch < ActiveRecord::Base
     if messy_text.nil?
       binding.pry
     end
-    messy_text = messy_text.gsub(/#{self.meme.tag_with_pound}/i, "")
+    messy_text = CGI.unescapeHTML messy_text
+    messy_text = messy_text.gsub(/#{self.meme.tag_with_pound}\:?\s*/i, "")
     messy_text = messy_text.gsub(/@\S+\s*/i, "")
 #    messy_text.gsub(/#replaceabookwithabeard/i, "")
 #    messy_text.gsub!(/beard/i, "")
 #    messy_text
+  end
+
+  def generate_score!
+    self.generate_score
+    self.save
   end
 
   def generate_score
@@ -37,7 +47,7 @@ class Punch < ActiveRecord::Base
   end
   
   def get_generated_score
-    force_new_score = true
+    force_new_score = false
     if force_new_score or self.score.nil?
       self.generate_score
       save
@@ -51,6 +61,6 @@ class Punch < ActiveRecord::Base
   
   def new_to_user?(user_in_question)
     assert user_in_question.present?, "User missing"
-    !user_in_question.has_voted_on_punch?(self)
+    user_in_question.could_vote_on_punch?(self)
   end
 end

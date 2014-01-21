@@ -1,6 +1,7 @@
 # encoding: utf-8
 class Meme < ActiveRecord::Base
   has_many :punches, dependent: :destroy
+  has_many :vote_decisions, dependent: :destroy
   validates :tag, presence: true
   validates_uniqueness_of :tag
   
@@ -93,21 +94,34 @@ class Meme < ActiveRecord::Base
   end
 
   def Meme.max_tweets_to_fetch
+    10
+  end
+
+  def Meme.max_scratch_tweets_to_fetch
     100
   end
 
   def pull_tweets
     # note that result_type = popular turns up very little content
-    opts = { :count => Meme.max_tweets_to_fetch, :result_type => 'recent' }
-    opts[:since_id] = self.last_tweet_id if self.punches.any?
+    opts = { :count => Meme.max_scratch_tweets_to_fetch, :result_type => 'recent' }
+#    opts[:since_id] = self.last_tweet_id if self.punches.any?
 
     #client.search(HASHTAG, opts).each { |tweet| Tweet.create_from_tweet(tweet) }
+    num_tweets_tried_to_add = 0
     self.twitter_client.search("\##{self.tag}", \
         opts).each.with_index(1) do |twitter_info, i|
-      break if i > Meme.max_tweets_to_fetch
+      break if num_tweets_tried_to_add > Meme.max_tweets_to_fetch
       next if twitter_info.retweeted_status.present? # skip retweets
-      self.punches << Punch.create_from_twitter_info!(twitter_info)
+      new_punch = Punch.create_from_twitter_info(twitter_info) # nil if tweet already exists!
+      if new_punch.present?
+        self.punches.push new_punch 
+        num_tweets_tried_to_add += 1
+      end
     end
+  end
+
+  def generate_scores!
+    self.punches.each {|punch| punch.generate_score!}
   end
   
 end

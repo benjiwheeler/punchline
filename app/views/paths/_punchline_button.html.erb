@@ -1,8 +1,8 @@
 <% @form_vote_decision = VoteDecision.new %>
 <% @form_vote_decision.user = current_user %>
-<% @form_vote_decision.votes.push Vote.new(punch_id: punch.id, value: 1.0) %>
+<% @form_vote_decision.votes.push Vote.new(punch_id: punch.id, value: 1.0 * standard_vote_size) %>
 <% losing_punches.each do |loser| %>
-  <% @form_vote_decision.votes.push Vote.new(punch_id: loser.id, value: -1.0 / losing_punches.count) %>
+  <% @form_vote_decision.votes.push Vote.new(punch_id: loser.id, value: -1.0 * standard_vote_size / losing_punches.count) %>
 <% end %>
 
 <%= form_for @form_vote_decision, url: paths_vote_path, method: :post, html: { class: "punchline_button"} do |f| %>

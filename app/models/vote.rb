@@ -2,4 +2,8 @@
 class Vote < ActiveRecord::Base
   belongs_to :vote_decision
   belongs_to :punch
+
+  def is_unrepeatable?
+    !self.is_repeatable
+  end
 end

@@ -14,6 +14,7 @@
     <% @memes.each do |meme| %>
       <tr>
         <td><%= meme.tag %></td>
+        <td><%= meme.punches.count %> punches</td>
         <td><%= link_to 'Show', meme %></td>
         <td><%= link_to 'Edit', edit_meme_path(meme) %></td>
         <td><%= link_to 'Destroy', meme, method: :delete, data: { confirm: 'Are you sure?' } %></td>

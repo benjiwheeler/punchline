@@ -8,7 +8,7 @@ class PathsController < ApplicationController
   end
 
   def index
-#    @path_action = handle_post(path_params)
+#    @path_action = handle_post(vote_params)
     if !set_meme
 #      binding.pry
       redirect_to paths_done_path
@@ -21,13 +21,19 @@ class PathsController < ApplicationController
 
 
   def vote
-    @decision = current_user.vote_decisions.create(path_params)
+    @decision = current_user.vote_decisions.create(vote_params)
     session["cur_meme_num_punches_seen_in_session"] += @decision.votes.count if @decision.votes.any?
     redirect_to paths_path, notice: "Got your vote!"
   end
 
-  def reset
-    current_user.vote_decisions.destroy_all
+  def soft_user_reset
+    meme_id = reset_params.meme_id
+    current_user.vote_decisions.where(meme_id: meme_id).each {|vote_decision| vote_decision.mark_repeatable!}
+    redirect_to paths_path, notice: "ok, you can vote on that meme again from scratch now"
+  end
+
+  def hard_user_reset
+    current_user.vote_decisions.destroy_all!
     redirect_to paths_path, notice: "all your votes are destroyed! welcome to america!"
   end
 
@@ -76,8 +82,11 @@ class PathsController < ApplicationController
         
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def path_params
+    def vote_params
       params.require(:vote_decision).permit( :user_id, {votes_attributes: [:punch_id, :value ]})
+    end
+    def reset_params
+      params.require(:reset).permit( :meme_id)
     end
 
 end

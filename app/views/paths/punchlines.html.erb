@@ -8,7 +8,7 @@
 <% end %>
 </div>
 
-<%= form_tag paths_reset_path do %>
-  <%= submit_tag "Reset this user (use in dev)" %>
+<%= form_for @cur_meme, url: paths_soft_reset_path do |f| %>
+  <%= f.submit "Soft reset this user's votes on this meme (use in dev)" %>
 <% end %>
 

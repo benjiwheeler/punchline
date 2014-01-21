@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140115214435) do
+ActiveRecord::Schema.define(version: 20140121161719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,8 +118,10 @@ ActiveRecord::Schema.define(version: 20140115214435) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "meme_id"
   end
 
+  add_index "vote_decisions", ["meme_id"], name: "index_vote_decisions_on_meme_id", using: :btree
   add_index "vote_decisions", ["user_id"], name: "index_vote_decisions_on_user_id", using: :btree
 
   create_table "votes", force: true do |t|
@@ -128,6 +130,7 @@ ActiveRecord::Schema.define(version: 20140115214435) do
     t.float    "value"
     t.integer  "punch_id"
     t.integer  "vote_decision_id"
+    t.boolean  "is_repeatable",    default: false
   end
 
   add_index "votes", ["punch_id"], name: "index_votes_on_punch_id", using: :btree

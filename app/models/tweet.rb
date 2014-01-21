@@ -1,6 +1,7 @@
 class Tweet < ActiveRecord::Base
   belongs_to :punch, dependent: :destroy
   belongs_to :twitter_user
+  validates :text, uniqueness: true
 
   def to_s
     #binding.pry
@@ -16,7 +17,7 @@ class Tweet < ActiveRecord::Base
   # tweet - the tweet to cache
   #
   # Returns the new CachedTweet
-  def Tweet.create_from_twitter_info!(tweet, twitter_user_author = nil)
+  def Tweet.create_from_twitter_info(tweet, twitter_user_author = nil)
     #json_attrs = JSON.parse(tweet.attrs.to_json, {:symbolize_names => true})
 #    binding.pry
 
@@ -32,7 +33,7 @@ class Tweet < ActiveRecord::Base
 
     twitter_user_author ||= TwitterUser.create_from_twitter_info!(tweet.user)
     
-    Tweet.create!(
+    new_tweet = Tweet.new(
     :tweet_id   => tweet.id.to_s,
     # need to do the following rval instead of just tweet.attrs in order to have symbols as keys in attrs. otherwise they are strings.
     :attrs      => tweet.attrs,
@@ -42,6 +43,12 @@ text: tweet.text,
       retweet_count: tweet.retweet_count.present? ? tweet.retweet_count : 0, 
       favorite_count: tweet.favorite_count.present? ? tweet.favorite_count : 0
     )
+    if new_tweet.valid?
+      new_tweet.save 
+      new_tweet
+    else
+      nil
+    end
   end
 
   # Public: Indicates whether cached tweets exist in the database or not
