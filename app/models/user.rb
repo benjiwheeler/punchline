@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 #         :recoverable, :rememberable, :trackable, :validatable
 
   # NOTE: is this one still necessary, since we're not using authenticate_user?
-  devise :database_authenticatable
+#  devise :database_authenticatable
   devise :rememberable, :trackable, :timeoutable
   devise :omniauthable, :omniauth_providers => [:facebook, :twitter]
   
@@ -27,7 +27,10 @@ class User < ActiveRecord::Base
     self.authorizations.each do |auth|
       return auth.nickname unless auth.nickname.blank?
     end
-    return self.email unless self.email.blank?
+    self.authorizations.each do |auth|
+      return auth.email unless auth.email.blank?
+    end
+    return self.key unless self.key.blank?
     return "Guest"
   end
 
@@ -40,15 +43,18 @@ class User < ActiveRecord::Base
     self.authorizations.where(provider: provider.to_s).first.attributes[fieldname.to_s]
   end
 
-  def User.find_from_oauth(oauth_params)
-    find_by_email(oauth_params.info.email)
+  def User.find_from_key_or_create(user_key)
+    existing_user = find_by_key(user_key)
+    if existing_user.blank? 
+      User.create_from_key(user_key)
+    end
   end
 
-  def User.create_from_oauth!(oauth_params)
+  def User.create_from_key(user_key)
 #    binding.pry
     newuser = User.new
-    newuser.email = oauth_params.info.email if oauth_params.info.email # not sure what the deal is with this
-    newuser.password = Devise.friendly_token[0,20] # not sure what the deal is with this
+    newuser.key = user_key
+#    newuser.password = Devise.friendly_token[0,20] # not sure what the deal is with this
     newuser.save!(:validate => false) # don't worry about email
     newuser
   end

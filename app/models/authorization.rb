@@ -9,8 +9,8 @@ class Authorization < ActiveRecord::Base
   
   def self.create_from_oauth(oauth_params, user = nil)
 #    binding.pry
-    user = User.find_from_oauth(oauth_params) if user.blank?
-    user = User.create_from_oauth!(oauth_params) if user.blank?
+    # if user is nil, user is not currently logged in; this is auth might be a user returning, or it might be going to be the user's primary auth. 
+    user ||= User.find_from_key_or_create(Authorization.user_key(oauth_params))
     # create new Authorization
     newauth = Authorization.new
     # mandatory values
@@ -21,6 +21,7 @@ class Authorization < ActiveRecord::Base
     # facebook
     newauth.uid = oauth_params.uid if oauth_params.uid
     newauth.oauth_expires_at = Time.at(oauth_params.credentials.expires_at) if oauth_params.credentials.expires_at
+    newauth.email = oauth_params.info.email if oauth_params.info.email
     # twitter
 # deprecated; oauth puts it in nickname    newauth.screen_name = oauth_params.screen_name if oauth_params.screen_name
     newauth.nickname = oauth_params.info.nickname if oauth_params.info.nickname
@@ -46,6 +47,14 @@ class Authorization < ActiveRecord::Base
     self.oauth_expires_at = Time.at(oauth_params.credentials.expires_at) if oauth_params.credentials.expires_at
     # twitter
     self.oauth_secret = oauth_params.credentials.secret if oauth_params.credentials.secret
+  end
+
+  def self.user_key(oauth_params)
+    retval = nil
+    retval = oauth_params.info.email if oauth_params.info.email # not sure what the deal is with this
+    retval ||= oauth_params.info.nickname if oauth_params.info.nickname # not sure what the deal is with this
+    # NOTE: maybe need to fall back on fname last name? 
+    retval 
   end
 end
 
