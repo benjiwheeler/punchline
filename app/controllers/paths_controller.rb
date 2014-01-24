@@ -8,8 +8,6 @@ class PathsController < ApplicationController
   end
 
   def index
-    render template: "paths/punchlines"
-    return
     session["init"] = true
 #      binding.pry
 #    @path_action = handle_post(vote_params)
@@ -120,7 +118,8 @@ class PathsController < ApplicationController
       return false if mode.blank?
       case mode
       when :starting
-        return session["num_decisions_made"] == 0 or session["num_decisions_made"].blank?
+        binding.pry
+        return (session["num_decisions_made"].blank? or session["num_decisions_made"] == 0)
       when :punches
         return good_meme?
       when :choose_meme
@@ -134,7 +133,7 @@ class PathsController < ApplicationController
     end
 
     def determine_mode
-      binding.pry
+#      binding.pry
       return cur_mode if good_mode?(cur_mode)
       modes.each do |mode| 
         if good_mode?(mode)
@@ -142,7 +141,7 @@ class PathsController < ApplicationController
           break
         end
       end
-      binding.pry
+#      binding.pry
       cur_mode
     end
     
