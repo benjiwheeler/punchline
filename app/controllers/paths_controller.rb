@@ -118,7 +118,7 @@ class PathsController < ApplicationController
       return false if mode.blank?
       case mode
       when :starting
-        binding.pry
+#        binding.pry
         return (session["num_decisions_made"].blank? or session["num_decisions_made"] == 0)
       when :punches
         return good_meme?
