@@ -31,12 +31,13 @@ group :production do
   gem 'rails_12factor'
 end
 #######################
-# development
-# something else in prod needs this
+# inspecting
 gem 'awesome_print'
+gem 'solid_assert'
+#######################
+# development
 group :development do
   # inspecting
-  gem 'solid_assert'
   gem "binding_of_caller"
   gem "better_errors"
   # debugging
