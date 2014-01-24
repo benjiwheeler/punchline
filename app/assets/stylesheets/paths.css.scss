@@ -70,8 +70,7 @@ p .long {
 	font-weight: 700;
 }
 
-.punchline_button input[type=submit] {
-    background-color: #ffdd66;
+.flow_button {
 border: 0;
 //    border: 2px solid #073;
     -moz-border-radius: 6px;
@@ -92,12 +91,27 @@ cursor: pointer;
     font-size: 60%;
 
 white-space: normal;
-
 }
 
-.punchline_button input[type=submit]:hover {
-    background-color: #66ddff;
+.punchline_button input[type=submit] {
+		  @extend .flow_button;
+    background-color: #ffdd66;
+
+    &:hover {
+    	   background-color: #66ddff;
+	   }
 }
+
+
+.meme_button input[type=submit] {
+		  @extend .flow_button;
+    background-color: #ddff66;
+
+    &:hover {
+    	   background-color: #66ffdd;
+	   }
+}
+
 
 #main {
 	width: 320px;

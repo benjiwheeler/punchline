@@ -8,6 +8,9 @@ class PathsController < ApplicationController
   end
 
   def index
+    render template: "paths/punchlines"
+    return
+    session["init"] = true
 #      binding.pry
 #    @path_action = handle_post(vote_params)
     if !determine_mode
@@ -17,7 +20,12 @@ class PathsController < ApplicationController
     end
 
     case cur_mode
-    when :start, :punches
+    when :starting
+      session["num_decisions_made"] = 0
+      set_mode(:punches)
+      redirect_to paths_path
+      return
+    when :punches
       if !determine_meme
 #        binding.pry
         redirect_to paths_done_path
@@ -43,12 +51,14 @@ class PathsController < ApplicationController
   def show_meme # choose meme to show
     set_meme(Meme.find(meme_params[:id]))
     set_mode(:punches)
+    session["num_decisions_made"] += 1 if session["num_decisions_made"].present?
     redirect_to paths_path, notice: "Let's see some punchlines for that meme!"
   end
 
   def vote
     @decision = current_user.vote_decisions.create(vote_params)
     session["cur_meme_num_punches_seen_in_session"] += @decision.votes.count if @decision.votes.any?
+    session["num_decisions_made"] += 1 if session["num_decisions_made"].present?
     redirect_to paths_path, notice: "Got your vote!"
   end
 
@@ -67,13 +77,13 @@ class PathsController < ApplicationController
           decision.votes.each {|vote| vote.mark_repeatable}
       end
     end
-    set_mode(:start)
+    set_mode(:starting)
     redirect_to paths_path, notice: notice
   end
 
   def hard_user_reset
     current_user.vote_decisions.destroy_all!
-    set_mode(:start)
+    set_mode(:starting)
     redirect_to paths_path, notice: "all your votes are destroyed! welcome to america!"
   end
 
@@ -93,7 +103,7 @@ class PathsController < ApplicationController
 
     def cur_mode
       return @cur_mode if @cur_mode.present?
-      return :start if session["cur_mode"].blank?
+      return :starting if session["cur_mode"].blank?
       @cur_mode = session["cur_mode"].to_sym
     end
 
@@ -109,8 +119,8 @@ class PathsController < ApplicationController
     def good_mode?(mode)
       return false if mode.blank?
       case mode
-      when :start
-        return true
+      when :starting
+        return session["num_decisions_made"] == 0 or session["num_decisions_made"].blank?
       when :punches
         return good_meme?
       when :choose_meme
@@ -120,18 +130,19 @@ class PathsController < ApplicationController
     end
 
     def modes
-      [:start, :punches, :choose_meme]
+      [:starting, :punches, :choose_meme]
     end
 
     def determine_mode
+      binding.pry
       return cur_mode if good_mode?(cur_mode)
       modes.each do |mode| 
         if good_mode?(mode)
           set_mode(mode)
           break
         end
-        # no good cur mode, so pick one
       end
+      binding.pry
       cur_mode
     end
     
