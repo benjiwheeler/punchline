@@ -111,11 +111,11 @@ class Meme < ActiveRecord::Base
   end
 
   def Meme.max_tweets_to_fetch
-    10
+    20
   end
 
   def Meme.max_scratch_tweets_to_fetch
-    100
+    200
   end
 
   def pull_tweets
