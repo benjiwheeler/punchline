@@ -17,13 +17,13 @@ class PathsController < ApplicationController
       return
     end
 
-    case cur_mode
-    when :starting
+    if cur_mode == :starting
       session["num_decisions_made"] = 0
       set_mode(:punches)
-      redirect_to paths_path
-      return
-    when :punches
+    end
+
+    case cur_mode
+    when :starting, :punches
       if !determine_meme
 #        binding.pry
         redirect_to paths_done_path
