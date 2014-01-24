@@ -120,7 +120,7 @@ class Meme < ActiveRecord::Base
 
   def pull_tweets
     # note that result_type = popular turns up very little content
-    opts = { :count => Meme.max_scratch_tweets_to_fetch, :result_type => 'recent' }
+    opts = { :count => Meme.max_scratch_tweets_to_fetch, :result_type => 'mixed' }
 #    opts[:since_id] = self.last_tweet_id if self.punches.any?
 
     #client.search(HASHTAG, opts).each { |tweet| Tweet.create_from_tweet(tweet) }
