@@ -36,12 +36,13 @@ class Meme < ActiveRecord::Base
     num_votes
   end
 
-  def good_num_punches_left(user, num_punches_seen_in_session)
-#    binding.pry
-    num_punches_seen_ever = self.num_votes_by(user)
-    num_punches_unseen = self.punches.count - num_punches_seen_ever
-    num_punches_seen_in_session < Meme.max_punches_per_meme_per_session \
-        and num_punches_unseen > Meme.min_punches_per_meme_per_session
+  def good_num_session_punches_left?(user, num_punches_seen_in_session=0)
+    num_punches_seen_in_session < Meme.max_punches_per_meme_per_session and \
+      good_num_unseen_punches_left?(user)
+  end
+
+  def good_num_unseen_punches_left?(user)
+    self.num_punches_fresh_to_user(user) >= Meme.min_punches_per_meme_per_session
   end
 
   def punches_sorted_by_score
@@ -50,8 +51,15 @@ class Meme < ActiveRecord::Base
     sorted_punches
   end
 
+  def Meme.summarize_for_user(user)
+    Meme.all.each do |meme|
+      logger.info "Meme: #{meme.id} text: #{meme.tag} punches: #{meme.punches.count} fresh punches: #{meme.num_punches_fresh_to_user(user)}"
+    end
+  end
+
   def Meme.sorted_by_score_for_user(user)
-    sorted_memes = Meme.all.shuffle #.sort_by { |meme| meme.get_generated_score }.reverse
+#    sorted_memes = Meme.all.sort_by { |meme| meme.get_generated_score }.reverse
+    sorted_memes = Meme.all.find_all{|meme| meme.good_num_unseen_punches_left?(user)}.sort_by { |meme| [meme.num_votes_by(user), -meme.num_punches_fresh_to_user(user)] }
     sorted_memes
   end
 
@@ -63,18 +71,27 @@ class Meme < ActiveRecord::Base
     3
   end
   
-  def punches_fresh_to_user(user, num_punches)
+  def num_punches_fresh_to_user(user)
+    self.punches.find_all{|punch| punch.new_to_user?(user)}.count
+  end
+
+  def n_best_punches_fresh_to_user(user, count)
     assert user.present?, "User missing"
     best_punches = Array.new
     sorted_punches = punches_sorted_by_score
     sorted_punches.each do |punch|
       if punch.new_to_user?(user)
         best_punches.push punch
-        break if best_punches.count >= num_punches
+        break if best_punches.count >= count
       end
     end
-    best_punches
+#    binding.pry
+    best_punches.count == count ? best_punches : nil
   end    
+
+  def self.memes_fresh_to_user(user)
+    Meme.sorted_by_score_for_user(user)
+  end
 
   def twitter_client
     @client ||= Twitter::REST::Client.new do |config|

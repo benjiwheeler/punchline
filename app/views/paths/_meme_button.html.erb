@@ -1,0 +1,5 @@
+<% text = meme.tag if text.blank? %>
+<%= form_for meme, url: paths_show_meme_path, method: :post, html: { class: "meme_button"} do |f| %>
+  <%= hidden_field_tag "meme[id]", meme.id %>
+  <%= f.submit text.blank? ? meme.tag : text %>
+<% end %>

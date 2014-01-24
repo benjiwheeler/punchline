@@ -12,8 +12,9 @@ Punchline::Application.routes.draw do
   match 'paths/login', to: 'paths#login', via: [:post, :get]
   match 'paths/done', to: 'paths#done', via: [:post, :get]
   match 'paths/vote', to: 'paths#vote', via: :post
-  match 'paths/soft_user_reset', to: 'paths#soft_user_reset', via: :patch
-  match 'paths/hard_user_reset', to: 'paths#hard_user_reset', via: :patch
+  match 'paths/show_meme', to: 'paths#show_meme', via: :post
+  match 'paths/soft_user_reset', to: 'paths#soft_user_reset', via: :post
+  match 'paths/hard_user_reset', to: 'paths#hard_user_reset', via: :post
 
 
 #  match 'auth/:provider/callback', to: 'sessions#authcallback', via: :get
