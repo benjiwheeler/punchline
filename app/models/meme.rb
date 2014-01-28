@@ -75,10 +75,10 @@ class Meme < ActiveRecord::Base
     self.punches.find_all{|punch| punch.new_to_user?(user)}.count
   end
 
-  def Meme.n_best_mees_fresh_to_user(user, count, args={})
-    exclude_list = args.key?(:exclude) ? args[:exclude] : []
+  def Meme.n_best_memes_fresh_to_user(user, count, exclude_list)
     best_memes = Array.new
     sorted_memes = Meme.sorted_by_score_for_user(user)
+    return nil if sorted_memes.blank?
     sorted_memes.each do |meme|
       if meme.good_num_unseen_punches_left?(user) and \
              !exclude_list.include?(meme)
@@ -87,7 +87,7 @@ class Meme < ActiveRecord::Base
       end
     end
 #    binding.pry
-    best_memee.count == count ? best_memes : nil    
+    best_memes.count == count ? best_memes : nil    
   end
 
   def n_best_punches_fresh_to_user(user, count)

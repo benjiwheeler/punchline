@@ -38,9 +38,9 @@ class Tweet < ActiveRecord::Base
                    retweet_count: tweet.retweet_count.present? ? tweet.retweet_count : 0, 
                    favorite_count: tweet.favorite_count.present? ? tweet.favorite_count : 0
       )
-    end
+     end
 
-    return nil if !Tweet.text_is_valid(tweet.text)
+    return nil if !Tweet.text_is_valid?(tweet.text)
 
     twitter_user_author ||= TwitterUser.create_from_twitter_info!(tweet.user)
     

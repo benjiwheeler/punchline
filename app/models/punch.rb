@@ -16,11 +16,18 @@ class Punch < ActiveRecord::Base
   end
 
   def cleaned_text
+
+    if tweet.blank?
+      messy_text = "not available"
+    else
+      messy_text = tweet.text
+    end
+
     messy_text = tweet.blank? ? "not available" : tweet.text
 #    return self.meme.tag_with_pound
-    if messy_text.nil?
-      binding.pry
-    end
+#    if messy_text.nil?
+#      binding.pry
+#    end
     messy_text = CGI.unescapeHTML messy_text
     messy_text = messy_text.gsub(/#{self.meme.tag_with_pound}\:?\s*/i, "")
     messy_text = messy_text.gsub(/@\S+\s*/i, "")
@@ -38,7 +45,7 @@ class Punch < ActiveRecord::Base
     # binding.pry
     user_score = self.tweet.twitter_user.get_generated_score
     tweet_validity_score = self.tweet.text_is_valid? ? 0 : -50
-    vote_score = 0
+   vote_score = 0
     if self.votes.any?
       self.votes.each do |vote|
         vote_score += vote.value

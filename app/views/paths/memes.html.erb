@@ -5,6 +5,7 @@
 <% end %>
 </div>
 <hr>
+
 <% if @cur_meme.present? %>
   <div id="buttons" class="group buttons memes">
     <%= render :partial => 'meme_button', locals: {meme: @cur_meme, text: "Stick with #{@cur_meme.tag} a while longer"} %>

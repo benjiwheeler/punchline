@@ -40,10 +40,11 @@ class PathsController < ApplicationController
       end
     when :choose_meme
       cur_meme # grab current meme from params, session; might be nil
-      @alt_memes = Meme.n_best_memes_fresh_to_user(current_user, Meme.min_punches_per_meme_per_session, exclude: [cur_meme])
+      @alt_memes = Meme.n_best_memes_fresh_to_user(current_user, Meme.min_punches_per_meme_per_session, [cur_meme])
       if !good_meme?
         set_meme(nil)
-      #binding.pry
+      end
+#      #binding.pry
       render template: "paths/memes"
     end
   end
