@@ -37,13 +37,14 @@ class Punch < ActiveRecord::Base
   def generate_score
     # binding.pry
     user_score = self.tweet.twitter_user.get_generated_score
+    tweet_validity_score = self.tweet.text_is_valid? ? 0 : -50
     vote_score = 0
     if self.votes.any?
       self.votes.each do |vote|
         vote_score += vote.value
       end
     end
-    self.score = user_score + vote_score
+    self.score = user_score + vote_score + tweet_validity_score
   end
   
   def get_generated_score

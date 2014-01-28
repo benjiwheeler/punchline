@@ -12,6 +12,16 @@ class Tweet < ActiveRecord::Base
     "score: #{self.score} #{name} (@#{screen_name}): #{text} [Created #{created_in_twitter_at}]"
   end
   
+  def text_is_valid?
+    Tweet.text_is_valid?(self.text)
+  end
+
+  def Tweet.text_is_valid?(text)
+    return false if text =~ /https?\:\/\// # no links
+    return false if text =~ /\A\s*\Z/ # no blank entries
+    true
+  end
+  
   # Public: Creates a CachedTweet from a Tweet object
   #
   # tweet - the tweet to cache
@@ -22,14 +32,15 @@ class Tweet < ActiveRecord::Base
 #    binding.pry
 
     # don't duplicate tweets. but do update them with info that changes over time
-    existing_tweets = Tweet.where(tweet_id: tweet.id.to_s)
-    if existing_tweets.present?
-      existing_tweet = existing_tweets.first
+    existing_tweet = Tweet.find(tweet_id: tweet.id.to_s)
+    if existing_tweet.present?
       existing_tweet.update(
                    retweet_count: tweet.retweet_count.present? ? tweet.retweet_count : 0, 
                    favorite_count: tweet.favorite_count.present? ? tweet.favorite_count : 0
       )
     end
+
+    return nil if !Tweet.text_is_valid(tweet.text)
 
     twitter_user_author ||= TwitterUser.create_from_twitter_info!(tweet.user)
     

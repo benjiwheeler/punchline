@@ -39,8 +39,10 @@ class PathsController < ApplicationController
         render template: "paths/punchlines"
       end
     when :choose_meme
-      @alt_memes = Meme.memes_fresh_to_user(current_user).take(Meme.min_punches_per_meme_per_session)
-      cur_meme # might be nil
+      cur_meme # grab current meme from params, session; might be nil
+      @alt_memes = Meme.n_best_memes_fresh_to_user(current_user, Meme.min_punches_per_meme_per_session, exclude: [cur_meme])
+      if !good_meme?
+        set_meme(nil)
       #binding.pry
       render template: "paths/memes"
     end
@@ -159,8 +161,9 @@ class PathsController < ApplicationController
     end
 
     def set_meme(meme)
-        session["cur_meme_id"] = meme.id
-        session["cur_meme_num_punches_seen_in_session"] = 0
+      @cur_meme = meme
+      session["cur_meme_id"] = meme.present? ? meme.id : nil
+      session["cur_meme_num_punches_seen_in_session"] = 0
     end
 
     def determine_meme

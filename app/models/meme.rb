@@ -75,6 +75,21 @@ class Meme < ActiveRecord::Base
     self.punches.find_all{|punch| punch.new_to_user?(user)}.count
   end
 
+  def Meme.n_best_mees_fresh_to_user(user, count, args={})
+    exclude_list = args.key?(:exclude) ? args[:exclude] : []
+    best_memes = Array.new
+    sorted_memes = Meme.sorted_by_score_for_user(user)
+    sorted_memes.each do |meme|
+      if meme.good_num_unseen_punches_left?(user) and \
+             !exclude_list.include?(meme)
+        best_memes.push meme
+        break if best_memes.count >= count
+      end
+    end
+#    binding.pry
+    best_memee.count == count ? best_memes : nil    
+  end
+
   def n_best_punches_fresh_to_user(user, count)
     assert user.present?, "User missing"
     best_punches = Array.new
