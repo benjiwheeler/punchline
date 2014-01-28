@@ -135,17 +135,18 @@ class PathsController < ApplicationController
       [:starting, :punches, :choose_meme]
     end
 
+    # randomly look for a good mode
     def determine_mode
 #      binding.pry
       return cur_mode if good_mode?(cur_mode)
-      modes.each do |mode| 
+      modes.shuffle.each do |mode| 
         if good_mode?(mode)
           set_mode(mode)
-          break
+          return cur_mode
         end
       end
 #      binding.pry
-      cur_mode
+      set_mode(nil)
     end
     
     def cur_meme
