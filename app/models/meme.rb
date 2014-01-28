@@ -46,7 +46,7 @@ class Meme < ActiveRecord::Base
   end
 
   def punches_sorted_by_score
-    sorted_punches = self.punches.sort_by { |punch| punch.get_generated_score }.reverse
+    sorted_punches = self.punches.sort_by { |punch| punch.get_generated_score(randomize: true) }.reverse
     #binding.pry
     sorted_punches
   end
@@ -75,7 +75,8 @@ class Meme < ActiveRecord::Base
     self.punches.find_all{|punch| punch.new_to_user?(user)}.count
   end
 
-  def Meme.n_best_memes_fresh_to_user(user, count, exclude_list)
+  def Meme.n_best_memes_fresh_to_user(user, count, args={})
+    exclude_list = args.key?(:exclude) ? args[:exclude] : []
     best_memes = Array.new
     sorted_memes = Meme.sorted_by_score_for_user(user)
     return nil if sorted_memes.blank?
@@ -95,7 +96,7 @@ class Meme < ActiveRecord::Base
     best_punches = Array.new
     sorted_punches = punches_sorted_by_score
     sorted_punches.each do |punch|
-      if punch.new_to_user?(user)
+      if punch.get_generated_score > Punch.min_score_to_show and  punch.new_to_user?(user)
         best_punches.push punch
         break if best_punches.count >= count
       end

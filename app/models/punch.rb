@@ -5,6 +5,10 @@ class Punch < ActiveRecord::Base
   has_many :votes, dependent: :destroy
   before_save :init
 
+  def Punch.min_score_to_show
+    -5.0
+  end
+
   def Punch.create_from_twitter_info(twitter_info)
     newpunch = Punch.new
     newpunch.tweet = Tweet.create_from_twitter_info(twitter_info)
@@ -16,15 +20,9 @@ class Punch < ActiveRecord::Base
   end
 
   def cleaned_text
-
-    if tweet.blank?
-      messy_text = "not available"
-    else
-      messy_text = tweet.text
-    end
-
+#   return self.get_generated_score
     messy_text = tweet.blank? ? "not available" : tweet.text
-#    return self.meme.tag_with_pound
+
 #    if messy_text.nil?
 #      binding.pry
 #    end
@@ -33,7 +31,8 @@ class Punch < ActiveRecord::Base
     messy_text = messy_text.gsub(/@\S+\s*/i, "")
 #    messy_text.gsub(/#replaceabookwithabeard/i, "")
 #    messy_text.gsub!(/beard/i, "")
-#    messy_text
+
+    messy_text
   end
 
   def generate_score!
@@ -45,7 +44,8 @@ class Punch < ActiveRecord::Base
     # binding.pry
     user_score = self.tweet.twitter_user.get_generated_score
     tweet_validity_score = self.tweet.text_is_valid? ? 0 : -50
-   vote_score = 0
+    # gen val between 0 and 10, with half the values below 2.5
+    vote_score = 0
     if self.votes.any?
       self.votes.each do |vote|
         vote_score += vote.value
@@ -54,13 +54,20 @@ class Punch < ActiveRecord::Base
     self.score = user_score + vote_score + tweet_validity_score
   end
   
-  def get_generated_score
+  def get_generated_score(args={})
     force_new_score = false
     if force_new_score or self.score.nil?
-      self.generate_score
+      self.generate_score(args)
       save
     end
-    self.score
+
+    # add random element
+    randomize = args.key?(:randomize) ? args[:randomize] : false
+    rand_val = rand(100)
+    long_tail_rand_val = (rand_val * rand_val / 10000.0)
+    random_score = long_tail_rand_val * 10.0
+
+    self.score + random_score
   end
   
   def init
