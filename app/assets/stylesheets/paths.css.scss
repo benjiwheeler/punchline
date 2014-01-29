@@ -198,3 +198,58 @@ white-space: normal;
     -moz-transform-origin: 50% 0;
 	}
 }
+
+#fullfocus {
+	$handheld_border_radius: 30px;
+	$medium_border_radius: 50px;
+	$wide_border_radius: 80px;
+	
+	/*
+	@include respond-to(handhelds) { 
+		width: 95vw;
+		-moz-border-radius:$handheld_border_radius;
+		-webkit-border-radius:$handheld_border_radius;
+	    border-radius: $handheld_border_radius;
+	  	padding: 4vmin;
+		
+	}
+	  @include respond-to(medium-screens) { 
+		  width: 80vw; 
+	  	-moz-border-radius:$medium_border_radius;
+	  	-webkit-border-radius:$medium_border_radius;
+	      border-radius: $medium_border_radius;		
+  	  	padding: 7vmin;
+		    
+	  }
+	  @include respond-to(wide-screens) { 
+		  width: 60vw; 
+	  	-moz-border-radius:$wide_border_radius;
+	  	-webkit-border-radius:$wide_border_radius;
+	      border-radius: $wide_border_radius;
+		  padding: 8vmin;		  
+	  }
+	  */
+	
+	width: 310px;
+	-moz-border-radius:$handheld_border_radius;
+	-webkit-border-radius:$handheld_border_radius;
+    border-radius: $handheld_border_radius;
+  	padding: 15px 10px;
+	
+	
+  height: auto;
+  
+  display: block;
+    position:relative;
+//    bottom:0;
+  //  top:0;
+//    left:0;
+  //  right:0;
+  background-color: #fff;
+  //margin: 0 auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+    border: 3px solid #bbb;
+}

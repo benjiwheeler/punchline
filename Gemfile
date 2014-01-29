@@ -40,6 +40,7 @@ group :development do
   # inspecting
   gem "binding_of_caller"
   gem "better_errors"
+  gem "rubocop"
   # debugging
   gem 'pry', group: [:development, :test]
   gem 'pry-rails', group: [:development, :test]
