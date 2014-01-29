@@ -1,19 +1,41 @@
 <div id="navigation">
-	<%= form_for :meme, url: memes_search_path, html: {method: 'GET', class: "meme_search_form"} do |f| %>
-	  <%= f.text_field :tag, placeholder: "Enter any twitter hashtag" %>
-	  <%= f.submit "Go" %>
+  <% if @show_meme_search %>
+  	<%= form_for :meme, url: memes_search_path, html: {method: 'GET', class: "meme_search_form"} do |f| %>
+  	  <%= f.text_field :tag, placeholder: "Enter any twitter hashtag" %>
+  	  <%= f.submit "Go" %>
+  	<% end %>
 	<% end %>
 
-	<% if current_user %>
 
-    <p class="navbar-text">Signed in as <strong><%= current_user.name %></strong>
-    <%= link_to "[Sign out]", destroy_user_session_path, id: "sign_out", class: "navbar-link", method: :delete %></p>
-           <%= render partial: 'nav/authstatus', locals: {provider: :facebook, displayname: :name} %>
-           <%= render partial: 'nav/authstatus', locals: {provider: :twitter, displayname: :nickname} %>
+<div id="auth_section">
+	<% if current_user %>
+                 <% already_displayed_sign_out = false %>
+
+<!--    <p class="navbar-text">Signed in as <strong><%= current_user.name %></strong> -->
+         <% all_providers.each do |provider_sym| %>
+           <% if current_user.has_auth?(provider_sym) %>
+             <p class="navbar-text">
+               <%= render partial: 'nav/authstatus', locals: {provider: provider_sym, show_sign_out: !already_displayed_sign_out} %>
+               <% if !already_displayed_sign_out %>
+                 <% already_displayed_sign_out = true %>
+               <% end %>
+             </p>
+            <% end %>
+          <% end %>
+
+         <% all_providers.each do |provider_sym| %>
+           <% if !current_user.has_auth?(provider_sym) %>
+             <p class="navbar-text">
+             <%= render partial: 'nav/authstatus', locals: {provider: provider_sym} %>
+             </p>
+            <% end %>
+          <% end %>
+
 
   <% else %>
     <p class="navbar-text"><%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook), id: "sign_in", class: "navbar-link" %></p>
     <p class="navbar-text"><%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter), id: "sign_in", class: "navbar-link" %></p>
   <% end %>
 
+</div>
 </div>

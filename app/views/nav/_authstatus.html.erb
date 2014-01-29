@@ -1,8 +1,21 @@
-<% if current_user.has_auth?(provider) %>
-  <p class="navbar-text"><%= fa_icon "check-circle" %></i>
-  <%= provider.to_s.capitalize %>:
-  <%= "@" if provider == :twitter and displayname == :nickname %><%= current_user.auth_field(provider, displayname) %></p>
-<% else %>
-  <p class="navbar-text">
-  <%= link_to "Add #{provider.to_s.capitalize}", user_omniauth_authorize_path(:facebook), id: "sign_in", class: "navbar-link" %></p>
+<% prefix = "" %>
+<% case provider %>
+<% when :facebook %>
+  <% displayname = :name %>
+  <% provider_icon = "facebook-square" %>
+<% when :twitter %>
+  <% displayname = :nickname %>
+  <% provider_icon = "twitter-square" %>
+  <% prefix = "@" %>
 <% end %>
+    
+<p class="navbar-text"><%= fa_icon provider_icon %></i>
+  <% if current_user.has_auth?(provider) %>
+    <%= prefix %><%= current_user.auth_field(provider, displayname) %>
+    <% if show_sign_out %>
+      <%= link_to "[Sign out]", destroy_user_session_path, id: "sign_out", class: "navbar-lin", method: :delete %>
+    <% end %>
+  <% else %>
+    <%= link_to "Add #{provider.to_s.capitalize}", user_omniauth_authorize_path(:facebook), id: "sign_in", class: "navbar-link" %>
+  <% end %>
+</p>
