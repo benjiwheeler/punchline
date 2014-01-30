@@ -6,6 +6,7 @@
   	<% end %>
 	<% end %>
 
+<% if @suppress_nav_auth != true %>
 
 <div id="auth_section">
 	<% if current_user %>
@@ -38,4 +39,6 @@
   <% end %>
 
 </div>
+  <% end %>
+
 </div>

@@ -192,6 +192,26 @@ cursor: pointer;
 white-space: normal;
 }
 
+.login_button[type=submit] {
+		  @extend .flow_button;
+    background-color: #444488;
+	     width: 80%;
+	     font-size: 120%;
+}
+
+.facebook_login_button[type=submit] {
+		  @extend .login_button;
+    background-color: #444488;
+    color: #88e;
+}
+
+.twitter_login_button[type=submit] {
+		  @extend .login_button;
+    background-color: #bce;
+    color: #448;
+}
+
+
 .reset_button[type=submit] {
 		  @extend .flow_button;
     background-color: #ffdd66;
@@ -200,7 +220,6 @@ white-space: normal;
 margin: 3px;
 margin-top: 40px;
 padding: 3px;
-white-space: normal;
 }
 
 .punchline_button input[type=submit] {

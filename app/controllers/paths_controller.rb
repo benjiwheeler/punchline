@@ -5,6 +5,7 @@ class PathsController < ApplicationController
   before_filter :user_must_be_logged_in, :except => [:login]
 
   def login
+    @suppress_nav_auth = true
   end
 
   def index

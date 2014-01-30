@@ -1,0 +1,11 @@
+<% case provider %>
+<% when :facebook %>
+  <% provider_icon = "facebook-square" %>
+<% when :twitter %>
+  <% provider_icon = "twitter-square" %>
+<% end %>
+
+<%= form_tag user_omniauth_authorize_path(provider) do %>
+  <!-- submit_tag "#{fa_icon provider_icon} Login width #{provider.to_s.camelize}", class: "#{provider}_login_button" -->
+  <%= submit_tag "Login to #{provider.to_s.camelize}", class: "#{provider}_login_button" %>
+<% end %>
