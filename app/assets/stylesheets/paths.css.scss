@@ -178,7 +178,6 @@ border: 0;
     border-radius:6px;
 cursor: pointer;
 
-	width: 80%;
 	padding-left: 20px;
 	padding-right: 20px;
 	padding-top: 12px;
@@ -188,7 +187,7 @@ cursor: pointer;
 	margin-left: 10px;
 	margin-right: 10px;
 
-    font-size: 60%;
+    font-size: 100%;
 
 white-space: normal;
 }
@@ -197,7 +196,7 @@ white-space: normal;
 		  @extend .flow_button;
     background-color: #ffdd66;
 	     width: 150px;
-	     font-size: 40%;
+	     font-size: 60%;
 margin: 3px;
 margin-top: 40px;
 padding: 3px;
@@ -206,6 +205,7 @@ white-space: normal;
 
 .punchline_button input[type=submit] {
 		  @extend .flow_button;
+	width: 90%;
     background-color: #ffdd66;
 
     &:hover {
@@ -216,6 +216,7 @@ white-space: normal;
 
 .meme_button input[type=submit] {
 		  @extend .flow_button;
+	width: 80%;
     background-color: #ddff66;
 
     &:hover {

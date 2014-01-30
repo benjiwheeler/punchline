@@ -6,7 +6,7 @@ class Punch < ActiveRecord::Base
   before_save :init
 
   def Punch.min_score_to_show
-    -500.0
+    -10.0
   end
 
   def Punch.create_from_twitter_info(twitter_info)
@@ -22,9 +22,9 @@ class Punch < ActiveRecord::Base
   def cleaned_text
     messy_text = tweet.blank? ? "not available" : tweet.text
 
-    if true
-      messy_text = "#{messy_text} [#{self.get_generated_score}]"
-    end
+#    if true
+#      messy_text = "#{messy_text} [#{self.get_generated_score}]"
+#    end
 
 
 #    if messy_text.nil?
