@@ -33,11 +33,6 @@ body {
     text-align: center;
 }
 
-p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
-  line-height: 18px;
-}
 
 pre {
   background-color: #eee;
@@ -58,7 +53,7 @@ a {
 
 div {
   &.field, &.actions {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 }
 
@@ -97,7 +92,11 @@ div {
 
 
 #navigation {
-	    padding: 10px;
+	    padding-left: 10px;
+	    padding-right: 10px;
+	    padding-top: 5px;
+	    padding-bottom: 5px;
+
 }
 
 .navbar-text {
@@ -142,7 +141,6 @@ h2 {
 	 font-size: 180%;
 	 line-height: 110%;
  	color: #1947A3;
-  margin-top: 5px;
   margin-bottom: 15px;
 }
 
