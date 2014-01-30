@@ -13,6 +13,7 @@ class PathsController < ApplicationController
 #    @path_action = handle_post(vote_params)
     if !determine_mode
 #      binding.pry
+      logger.info 'could not determine valid mode'
       redirect_to paths_done_path
       return
     end
@@ -26,6 +27,7 @@ class PathsController < ApplicationController
     when :starting, :punches
       if !determine_meme
 #        binding.pry
+        logger.info 'could not determine valid meme'
         redirect_to paths_done_path
         return
       end  
@@ -33,6 +35,7 @@ class PathsController < ApplicationController
 #      binding.pry
       if @punches.blank?
  #       binding.pry
+        logger.info "no punches for meme #{cur_meme}"
         redirect_to paths_done_path
         return
       else
@@ -93,14 +96,14 @@ class PathsController < ApplicationController
   end
 
   private
-    def handle_post(params)
-      path_action = params.path_action
-      path_action = :default if path_action.blank? 
-#      case path_action do
-#        when :vote
-#        when :default
- #     end
+  def handle_post(params)
+    path_action = params.path_action
+    path_action ||= :default
+    case path_action
+    when :vote
+    when :default
     end
+  end
 
     def cur_mode
       return @cur_mode if @cur_mode.present?

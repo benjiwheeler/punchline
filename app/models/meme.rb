@@ -76,9 +76,9 @@ class Meme < ActiveRecord::Base
     logger.info "fresh_punches(#{user.name}, #{self.tag}): "
     self.punches.each do |punch|
       logger.info "  punch: #{punch.tweet.text.truncate(10)} is new to user?"
-      is_new = punch.new_to_user?(user) ? 'true' : 'false'
-      logger.info is_new
-      num_new += 1
+      is_new = punch.new_to_user?(user) && punch.get_generated_score > Punch.min_score_to_show ? true : false
+      num_new += 1 if is_new
+      logger.info "#{is_new} (#{num_new} now)"
     end
 #    self.punches.find_all { |punch| punch.new_to_user?(user) }.count
     logger.info "total new: #{num_new}"
@@ -102,13 +102,17 @@ class Meme < ActiveRecord::Base
   end
 
   def n_best_punches_fresh_to_user(user, count)
+    logger.info "n_best_punches(#{user.name}, #{self.tag}): "
     assert user.present?, "User missing"
     best_punches = Array.new
     sorted_punches = punches_sorted_by_score
+    logger.info "  total punches in this meme: #{sorted_punches.count}"
     sorted_punches.each do |punch|
-      if punch.get_generated_score > Punch.min_score_to_show and  punch.new_to_user?(user)
-        best_punches.push punch
-        break if best_punches.count >= count
+      if punch.new_to_user?(user)
+        if punch.get_generated_score > Punch.min_score_to_show
+          best_punches.push punch
+          break if best_punches.count >= count
+        end
       end
     end
 #    binding.pry

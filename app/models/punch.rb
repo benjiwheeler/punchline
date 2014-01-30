@@ -6,7 +6,7 @@ class Punch < ActiveRecord::Base
   before_save :init
 
   def Punch.min_score_to_show
-    -5.0
+    -500.0
   end
 
   def Punch.create_from_twitter_info(twitter_info)
@@ -20,8 +20,12 @@ class Punch < ActiveRecord::Base
   end
 
   def cleaned_text
-#   return self.get_generated_score
     messy_text = tweet.blank? ? "not available" : tweet.text
+
+    if true
+      messy_text = "#{messy_text} [#{self.get_generated_score}]"
+    end
+
 
 #    if messy_text.nil?
 #      binding.pry
@@ -44,7 +48,6 @@ class Punch < ActiveRecord::Base
     # binding.pry
     user_score = self.tweet.twitter_user.get_generated_score
     tweet_validity_score = self.tweet.text_is_valid? ? 0 : -50
-    # gen val between 0 and 10, with half the values below 2.5
     vote_score = 0
     if self.votes.any?
       self.votes.each do |vote|
@@ -62,10 +65,13 @@ class Punch < ActiveRecord::Base
     end
 
     # add random element
-    randomize = args.key?(:randomize) ? args[:randomize] : false
-    rand_val = rand(100)
-    long_tail_rand_val = (rand_val * rand_val / 10000.0)
-    random_score = long_tail_rand_val * 10.0
+    random_score = 0
+    randomize = args.key?(:randomize) ? args[:randomize] : false    
+    if randomize # gen val between 0 and 10, with half the values below 2.5
+      rand_val = rand(100)
+      long_tail_rand_val = (rand_val * rand_val / 10000.0)
+      random_score = long_tail_rand_val * 10.0      
+    end
 
     self.score + random_score
   end
