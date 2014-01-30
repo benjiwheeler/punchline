@@ -22,24 +22,86 @@ $break-large: 1024px;
   }
 }
 
-html {
-    background: #ccc;
-}
 body {
 	//min-width: 320px; // hack for mobile safari
-    font-family: "Lato";
+  background-color: #fff;
+  color: #333;
+  font-family: verdana, arial, helvetica, sans-serif;
+//    font-family: "Lato";
+  font-size: 13px;
 	line-height: 125%;
     text-align: center;
-  background: #ccc;
-	color: #005c1f;
 }
+
+p, ol, ul, td {
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+pre {
+  background-color: #eee;
+  padding: 10px;
+  font-size: 11px;
+}
+
+a {
+  color: #000;
+  &:visited {
+    color: #666;
+  }
+  &:hover {
+    color: #fff;
+    background-color: #000;
+  }
+}
+
+div {
+  &.field, &.actions {
+    margin-bottom: 10px;
+  }
+}
+
+#notice {
+  color: green;
+}
+
+.field_with_errors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+#error_explanation {
+  width: 450px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 0;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+  h2 {
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    margin: -7px;
+    margin-bottom: 0px;
+    background-color: #c00;
+    color: #fff;
+  }
+  ul li {
+    font-size: 12px;
+    list-style: square;
+  }
+}
+
 
 #navigation {
 	    padding: 10px;
 }
 
 .navbar-text {
-
+line-height: 100%;
 }
 
 // can't get this to work!
@@ -58,6 +120,18 @@ text-align: left;
 	margin-top: 2em;
 }
 
+.punch {
+    background-color: #ffeecc;
+    border: 1px solid #073;
+	width: 300px;
+	padding: 6px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 10px;
+	margin-right: 10px;
+	
+	
+}
 h1 {
 	color: #00007a;
 	 line-height: 110%;
@@ -68,16 +142,17 @@ h2 {
 	 font-size: 180%;
 	 line-height: 110%;
  	color: #1947A3;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 5px;
+  margin-bottom: 15px;
 }
 
 h3 {
-margin: 150px;
 	 font-size: 140%;
  	color: #1A1A80;
 	display: block;
 	 line-height: 110%;
+  margin-top: 3px;
+  margin-bottom: 10px;
 }
 
 p {
@@ -117,8 +192,14 @@ white-space: normal;
 }
 
 .reset_button[type=submit] {
+		  @extend .flow_button;
+    background-color: #ffdd66;
 	     width: 150px;
-	     font-size: 20%;
+	     font-size: 40%;
+margin: 3px;
+margin-top: 40px;
+padding: 3px;
+white-space: normal;
 }
 
 .punchline_button input[type=submit] {
