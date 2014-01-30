@@ -73,15 +73,15 @@ class Meme < ActiveRecord::Base
   
   def num_punches_fresh_to_user(user)
     num_new = 0
-    logger.debug "fresh_punches(#{user.name}, #{self.tag}): "
+    logger.info "fresh_punches(#{user.name}, #{self.tag}): "
     self.punches.each do |punch|
-      logger.debug "  punch: #{punch.tweet.text.truncate(10)} is new to user?"
+      logger.info "  punch: #{punch.tweet.text.truncate(10)} is new to user?"
       is_new = punch.new_to_user?(user) ? 'true' : 'false'
-      logger.debug is_new
+      logger.info is_new
       num_new += 1
     end
 #    self.punches.find_all { |punch| punch.new_to_user?(user) }.count
-    logger.debug "total new: #{num_new}"
+    logger.info "total new: #{num_new}"
     num_new
   end
 
