@@ -6,7 +6,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-$break-small: 320px;
+$break-small: 400px;
 $break-large: 1024px;
 
 
@@ -275,8 +275,8 @@ padding: 3px;
 
 @include respond-to(medium-screens) { 
   body {
-    zoom: 1.5;
-    -moz-transform: scale(1.5);
+    zoom: 1.25;
+    -moz-transform: scale(1.25);
     -moz-transform-origin: 50% 0;
   }
 }
