@@ -55,7 +55,7 @@ group :doc do
 end
 #######################
 # admin
-#gem 'rails_admin'
+gem 'rails_admin'
 #######################
 # auth
 gem "devise"

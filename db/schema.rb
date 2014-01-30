@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140123220700) do
+ActiveRecord::Schema.define(version: 20140130175704) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,19 @@ ActiveRecord::Schema.define(version: 20140123220700) do
 
   add_index "punches", ["meme_id"], name: "index_punches_on_meme_id", using: :btree
   add_index "punches", ["user_id"], name: "index_punches_on_user_id", using: :btree
+
+  create_table "rails_admin_histories", force: true do |t|
+    t.text     "message"
+    t.string   "username"
+    t.integer  "item"
+    t.string   "table"
+    t.integer  "month",      limit: 2
+    t.integer  "year",       limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
 
   create_table "tweets", force: true do |t|
     t.json     "attrs"

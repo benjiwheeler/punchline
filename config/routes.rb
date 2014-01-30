@@ -1,10 +1,13 @@
 Punchline::Application.routes.draw do
+  
+  
+  
+  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 #  devise_for :users
-  get "memes/search"
+  get 'memes/search'
   resources :memes
   
 
-#  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   root 'paths#index'
 
@@ -21,13 +24,14 @@ Punchline::Application.routes.draw do
 #  match 'auth/failure', to: 'sessions#authfailure', via: :get
 #  match 'signout', to: 'sessions#destroy', as: 'signout', via: :get
 
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 devise_scope :user do
-  get 'sign_in', :to => 'devise/sessions#new', :as => :new_user_session
-  delete 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
+#  get 'sign_in', to: 'devise/sessions#new', as: :new_user_session
+  get 'sign_in', to: 'paths#login', as: :new_user_session
+  delete 'sign_out', to: 'devise/sessions#destroy', as: :destroy_user_session
 end
 #devise_scope :user do
-#   get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
+#   get 'sign_out', to: 'devise/sessions#destroy', as: :destroy_user_session
 #end
 
   # The priority is based upon order of creation: first created -> highest priority.
