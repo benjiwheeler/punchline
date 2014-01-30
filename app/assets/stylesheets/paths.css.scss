@@ -169,6 +169,8 @@ p .long {
 }
 
 .flow_button {
+// necessary to override obnoxious styling on iphone
+-webkit-appearance: none;
 border: 0;
 //    border: 2px solid #073;
     -moz-border-radius: 6px;
