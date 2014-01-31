@@ -80,4 +80,12 @@ class User < ActiveRecord::Base
     end
     return nil
   end
+
+  def admin_keys
+    ['wheeler.benjamin@gmail.com', 'joshua.keay@gmail.com', 'benjiwheeler']
+  end
+
+  def is_admin?
+    admin_keys.include?(self.key)
+  end
 end

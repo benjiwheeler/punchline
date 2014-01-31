@@ -1,0 +1,7 @@
+messages
+<% if notice.present? or alert.present? %>
+<div id="navigation">
+       <p class="notice"><%= notice %></p>
+       <p class="alert"><%= alert %></p>
+</div>
+<% end %>

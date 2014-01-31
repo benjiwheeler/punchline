@@ -1,10 +1,3 @@
-// Place all the styles related to the paths controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
-// Place all the styles related to the SequentialAttempts controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
 
 $break-small: 400px;
 $break-large: 1024px;
@@ -55,6 +48,11 @@ div {
   &.field, &.actions {
     margin-bottom: 5px;
   }
+}
+
+#flash_messages {
+  background-color: light-green;
+  border: 2px solid green;
 }
 
 #notice {

@@ -53,7 +53,7 @@ class Meme < ActiveRecord::Base
 
   def Meme.summarize_for_user(user)
     Meme.all.each do |meme|
-      logger.info "Meme: #{meme.id} text: #{meme.tag} punches: #{meme.punches.count} fresh punches: #{meme.num_punches_fresh_to_user(user)}"
+      logger.debug "Meme: #{meme.id} text: #{meme.tag} punches: #{meme.punches.count} fresh punches: #{meme.num_punches_fresh_to_user(user)}"
     end
   end
 
@@ -73,15 +73,15 @@ class Meme < ActiveRecord::Base
   
   def num_punches_fresh_to_user(user)
     num_new = 0
-    logger.info "fresh_punches(#{user.name}, #{self.tag}): "
+    logger.debug "fresh_punches(#{user.name}, #{self.tag}): "
     self.punches.each do |punch|
-      logger.info "  punch: #{punch.tweet.text.truncate(10)} is new to user?"
+      logger.debug "  punch: #{punch.tweet.text.truncate(10)} is new to user?"
       is_new = punch.new_to_user?(user) && punch.get_generated_score > Punch.min_score_to_show ? true : false
       num_new += 1 if is_new
-      logger.info "#{is_new} (#{num_new} now)"
+      logger.debug "#{is_new} (#{num_new} now)"
     end
 #    self.punches.find_all { |punch| punch.new_to_user?(user) }.count
-    logger.info "total new: #{num_new}"
+    logger.debug "total new: #{num_new}"
     num_new
   end
 
@@ -102,11 +102,11 @@ class Meme < ActiveRecord::Base
   end
 
   def n_best_punches_fresh_to_user(user, count)
-    logger.info "n_best_punches(#{user.name}, #{self.tag}): "
+    logger.debug "n_best_punches(#{user.name}, #{self.tag}): "
     assert user.present?, "User missing"
     best_punches = Array.new
     sorted_punches = punches_sorted_by_score
-    logger.info "  total punches in this meme: #{sorted_punches.count}"
+    logger.debug "  total punches in this meme: #{sorted_punches.count}"
     sorted_punches.each do |punch|
       if punch.new_to_user?(user)
         if punch.get_generated_score > Punch.min_score_to_show

@@ -6,4 +6,5 @@ module ApplicationHelper
   def all_providers
     [:facebook, :twitter]
   end
+
 end

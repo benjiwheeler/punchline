@@ -45,6 +45,12 @@ class PathsController < ApplicationController
     when :choose_meme
       cur_meme # grab current meme from params, session; might be nil
       @alt_memes = Meme.n_best_memes_fresh_to_user(current_user, Meme.min_punches_per_meme_per_session, exclude: [cur_meme])
+      if @alt_memes.empty?
+        logger.info 'no alternative memes found'
+        redirect_to paths_done_path
+        return
+      end  
+
       if !good_meme?
         set_meme(nil)
       end

@@ -33,4 +33,7 @@ class ApplicationController < ActionController::Base
       redirect_to paths_login_path unless signed_in?
     end
 
+
+
+
 end
