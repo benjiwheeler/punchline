@@ -25,7 +25,7 @@ class PathsController < ApplicationController
     end
 
     logger.info "punch 1731 has score #{Punch.where(id: 1731).first.score}"
-    logger.info "punch 1731 is valid? #{Punch.where(id: 1731).is_valid?.to_s}"
+    logger.info "punch 1731 is valid? #{Punch.where(id: 1731).first.is_valid?.to_s}"
 
     case cur_mode
     when :starting, :punches
