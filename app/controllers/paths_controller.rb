@@ -24,6 +24,9 @@ class PathsController < ApplicationController
       set_mode(:punches)
     end
 
+    self.testing123
+
+
     case cur_mode
     when :starting, :punches
       if !determine_meme
