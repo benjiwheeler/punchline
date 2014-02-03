@@ -31,12 +31,21 @@ class Punch < ActiveRecord::Base
 #      binding.pry
 #    end
     messy_text = CGI.unescapeHTML messy_text
-    messy_text = messy_text.gsub(/#{self.meme.tag_with_pound}\:?\s*/i, "")
+    # remove this hash tag itself
+    messy_text = messy_text.gsub(/\#?#{self.meme.tag_with_pound}\:?\s*/i, "")
+    # remove usernames
     messy_text = messy_text.gsub(/@\S+\s*/i, "")
 #    messy_text.gsub(/#replaceabookwithabeard/i, "")
 #    messy_text.gsub!(/beard/i, "")
 
     messy_text
+  end
+
+  def text_is_valid?
+    temp_text = self.cleaned_text
+    return false if temp_text =~ %r!https?\://! # no links
+    return false if temp_text =~ /\A\s*\Z/ # no blank entries
+    true
   end
 
   def generate_score!
@@ -47,7 +56,7 @@ class Punch < ActiveRecord::Base
   def generate_score
     # binding.pry
     user_score = self.tweet.twitter_user.get_generated_score
-    tweet_validity_score = self.tweet.text_is_valid? ? 0 : -50
+    tweet_validity_score = self.text_is_valid? ? 0 : -50
     vote_score = 0
     if self.votes.any?
       self.votes.each do |vote|
