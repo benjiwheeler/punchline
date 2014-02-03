@@ -20,7 +20,7 @@ class Punch < ActiveRecord::Base
   end
 
   def cleaned_text
-    messy_text = tweet.blank? ? "not available" : tweet.text
+    return '' if tweet.blank?
 
 #    if true
 #      messy_text = "#{messy_text} [#{self.get_generated_score}]"
@@ -49,6 +49,9 @@ class Punch < ActiveRecord::Base
     temp_text = self.cleaned_text
     return false if temp_text =~ %r!https?\://! # no links
     return false if temp_text =~ /\A\s*\Z/ # no blank entries
+    logger.info "punch #{self.id} has score #{self.score}"
+    logger.info "punch #{self.id} is valid"
+    logger.info "cleaned text: #{temp_text}"
     true
   end
 
