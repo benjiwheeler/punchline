@@ -76,7 +76,7 @@ class Meme < ActiveRecord::Base
     logger.debug "fresh_punches(#{user.name}, #{self.tag}): "
     self.punches.each do |punch|
       logger.debug "  punch: #{punch.tweet.text.truncate(10)} is new to user?"
-      is_new = punch.new_to_user?(user) && punch.get_generated_score > Punch.min_score_to_show ? true : false
+      is_new = punch.showable_to_user?(user)
       num_new += 1 if is_new
       logger.debug "#{is_new} (#{num_new} now)"
     end
@@ -108,11 +108,9 @@ class Meme < ActiveRecord::Base
     sorted_punches = punches_sorted_by_score
     logger.debug "  total punches in this meme: #{sorted_punches.count}"
     sorted_punches.each do |punch|
-      if punch.new_to_user?(user)
-        if punch.get_generated_score > Punch.min_score_to_show && punch.is_valid?
-          best_punches.push punch
-          break if best_punches.count >= count
-        end
+      if punch.showable_to_user?(user)
+        best_punches.push punch
+        break if best_punches.count >= count
       end
     end
 #    binding.pry

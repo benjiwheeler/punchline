@@ -19,6 +19,11 @@ class Punch < ActiveRecord::Base
     end
   end
 
+  def showable_to_user?(user)
+    is_valid? && new_to_user?(user) && (get_generated_score > Punch.min_score_to_show)
+  end
+
+
   def cleaned_text
     return '' if tweet.blank?
     messy_text = tweet.text
