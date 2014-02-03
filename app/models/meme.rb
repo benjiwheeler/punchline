@@ -109,7 +109,7 @@ class Meme < ActiveRecord::Base
     logger.debug "  total punches in this meme: #{sorted_punches.count}"
     sorted_punches.each do |punch|
       if punch.new_to_user?(user)
-        if punch.get_generated_score > Punch.min_score_to_show
+        if punch.get_generated_score > Punch.min_score_to_show && punch.is_valid?
           best_punches.push punch
           break if best_punches.count >= count
         end
