@@ -21,6 +21,7 @@ class Punch < ActiveRecord::Base
 
   def cleaned_text
     return '' if tweet.blank?
+    messy_text = tweet.text
 
 #    if true
 #      messy_text = "#{messy_text} [#{self.get_generated_score}]"
