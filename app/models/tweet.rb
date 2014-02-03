@@ -34,7 +34,7 @@ class Tweet < ActiveRecord::Base
 #    binding.pry
 
     # don't duplicate tweets. but do update them with info that changes over time
-    existing_tweet = Tweet.find(tweet_id: tweet.id.to_s)
+    existing_tweet = Tweet.where(tweet_id: tweet.id.to_s).first
     if existing_tweet.present?
       existing_tweet.update(
                    retweet_count: tweet.retweet_count.present? ? tweet.retweet_count : 0, 
