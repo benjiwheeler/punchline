@@ -34,6 +34,7 @@ end
 # inspecting
 gem 'awesome_print'
 gem 'solid_assert'
+gem 'newrelic_rpm'
 #######################
 # development
 group :development do
