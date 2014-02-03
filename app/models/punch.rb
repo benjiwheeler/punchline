@@ -41,6 +41,10 @@ class Punch < ActiveRecord::Base
     messy_text
   end
 
+  def is_valid?
+    text_is_valid?
+  end
+
   def text_is_valid?
     temp_text = self.cleaned_text
     return false if temp_text =~ %r!https?\://! # no links
