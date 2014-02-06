@@ -73,7 +73,6 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'twitter'
 gem 'json'
-gem 'httparty'
 gem 'font-awesome-rails', '>= 4.0.0'
 #######################################
 
