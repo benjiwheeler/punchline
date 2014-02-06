@@ -47,6 +47,8 @@ group :development do
   gem 'pry-rails', group: [:development, :test]
   gem 'pry-byebug', group: [:development, :test] # instead of pry-debugger or pry-nav
   gem 'pry-stack_explorer', group: [:development, :test]
+  # profiling
+  gem 'ruby-prof'
 end
 #######################
 # documentation
@@ -71,6 +73,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'twitter'
 gem 'json'
+gem 'httparty'
 gem 'font-awesome-rails', '>= 4.0.0'
 #######################################
 

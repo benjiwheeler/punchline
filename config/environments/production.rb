@@ -29,6 +29,9 @@ Punchline::Application.configure do
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
+  # added per http://stackoverflow.com/questions/12475253/twitter-bootstrap-rails-on-heroku-glyphicons-displayed-as-squares to try to fix fontawesome showing up as squares
+  config.assets.precompile += %w( '.woff', '.eot', '.svg', '.ttf' )
+  
 
   # Generate digests for assets URLs.
   config.assets.digest = true

@@ -197,6 +197,7 @@ GEM
       parser (~> 2.1.3)
       powerpack (~> 0.0.6)
       rainbow (~> 1.99.1)
+    ruby-prof (0.14.2)
     safe_yaml (0.9.7)
     sass (3.2.13)
     sass-rails (4.0.1)
@@ -273,6 +274,7 @@ DEPENDENCIES
   rails_12factor
   rails_admin
   rubocop
+  ruby-prof
   sass-rails (~> 4.0.0)
   sdoc
   solid_assert

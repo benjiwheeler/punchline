@@ -29,4 +29,10 @@ Punchline::Application.configure do
   config.assets.debug = true
   
   SolidAssert.enable_assertions
+  
+  # new relic 
+  require 'new_relic/rack/developer_mode'
+  config.middleware.use NewRelic::Rack::DeveloperMode
+  ENV['NEWRELIC_ENABLE'] = 'true'
+  
 end
