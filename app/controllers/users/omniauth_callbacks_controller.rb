@@ -18,7 +18,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 #      binding.pry
     end
     # Log the authorizing user in.
-#    binding.pry
+    #binding.pry
     self.current_user= @auth.user
 #    binding.pry
     redirect_to root_url, notice: notice

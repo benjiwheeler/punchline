@@ -87,6 +87,9 @@ class PathsController < ApplicationController
       notice = "ok, you can vote on that meme from scratch now"
     end
     memes_to_reset.each do |meme|
+      # redis
+      $redis.del("meme:#{meme.tag}:user:#{current_user.id}:numfp")
+      $redis.del("meme:#{meme.tag}:user:#{current_user.id}:votes")
       meme.vote_decisions.where(user_id: current_user.id).each do |decision|
           decision.votes.each {|vote| vote.mark_repeatable}
       end

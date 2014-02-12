@@ -8,6 +8,7 @@ gem 'rails', '4.0.2'
 #######################
 # db
 gem 'pg'
+gem 'redis'
 #######################
 # css
 gem 'sass-rails', '~> 4.0.0'
@@ -49,6 +50,7 @@ group :development do
   gem 'pry-stack_explorer', group: [:development, :test]
   # profiling
   gem 'ruby-prof'
+  gem 'rack-mini-profiler'
 end
 #######################
 # documentation

@@ -13,6 +13,10 @@ class User < ActiveRecord::Base
   devise :rememberable, :trackable, :timeoutable
   devise :omniauthable, :omniauth_providers => [:facebook, :twitter]
   
+  def redis_key
+    "user:#{self.id}"
+  end
+  
   def to_s
     self.name
   end

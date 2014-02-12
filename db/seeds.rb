@@ -5,3 +5,13 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+["replaceabookwithabeard",
+"KnockOffBands",
+"LesserAwardShows",
+"FutureBooks",
+"FreeBandNames",
+"WrestlingTVShows",
+"CheesyMovies"].each do |hashtag|
+  Meme.create({tag: hashtag})
+end

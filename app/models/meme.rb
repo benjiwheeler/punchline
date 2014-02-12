@@ -29,10 +29,13 @@ class Meme < ActiveRecord::Base
   end
 
   def num_votes_by(user)
+    redis_votes = $redis.get("meme:#{self.tag}:user:#{user.id}:votes")
+    return redis_votes.to_i if !redis_votes.blank?
     num_votes = 0
     self.punches.each do |punch|
-      num_votes += user.votes.where(punch_id: punch.id).count
+      num_votes += user.votes.where({punch_id: punch.id, is_repeatable: false}).count
     end
+    $redis.set("meme:#{self.tag}:user:#{user.id}:votes", num_votes)
     num_votes
   end
 
@@ -72,6 +75,9 @@ class Meme < ActiveRecord::Base
   end
   
   def num_punches_fresh_to_user(user)
+    # redis
+    redis_num_fp = $redis.get("meme:#{self.tag}:user:#{user.id}:numfp")
+    return redis_num_fp.to_i if !redis_num_fp.blank?
     num_new = 0
     logger.debug "fresh_punches(#{user.name}, #{self.tag}): "
     self.punches.each do |punch|
@@ -82,6 +88,8 @@ class Meme < ActiveRecord::Base
     end
 #    self.punches.find_all { |punch| punch.new_to_user?(user) }.count
     logger.debug "total new: #{num_new}"
+    # redis
+    $redis.set("meme:#{self.tag}:user:#{user.id}:numfp", num_new)
     num_new
   end
 
